@@ -22,8 +22,8 @@ import org.kanelucky.mobmind.api.entity.ai.sensor.Sensors;
 import java.util.Set;
 
 /**
- * A custom entity that looks like a Blaze but behaves like an aggressive melee fighter.
- * Demonstrates how to create a fully custom entity with MobMind.
+ * A custom entity that looks like a Blaze but behaves like an aggressive melee fighter
+ * Demonstrates how to create a fully custom entity with MobMind
  *
  * @author Kanelucky
  */
@@ -37,20 +37,15 @@ public class IronGuardian extends IntelligentEntity {
         this.behaviorGroup.setEntity(this);
     }
 
-    // --- Identity ---
 
     @Override
     public Key getMobKey() {
         return Key.key("mobmind", "iron_guardian");
     }
 
-    // --- Stats ---
-
     @Override protected double getBaseHealth() { return 60.0; }
     @Override protected double getBaseAttack() { return 8.0; }
     @Override protected double getBaseMoveSpeed() { return 0.12; }
-
-    // --- Sounds ---
 
     protected SoundEvent getHurtSound() {
         return SoundEvent.ENTITY_IRON_GOLEM_HURT;
@@ -59,8 +54,6 @@ public class IronGuardian extends IntelligentEntity {
     protected SoundEvent getDeathSound() {
         return SoundEvent.ENTITY_IRON_GOLEM_DEATH;
     }
-
-    // --- Lifecycle ---
 
     @Override
     public boolean damage(@NotNull Damage damage) {
@@ -78,8 +71,6 @@ public class IronGuardian extends IntelligentEntity {
     public void update(long time) {
         super.update(time);
     }
-
-    // --- AI ---
 
     @Override
     public BehaviorGroup getBehaviorGroup() { return behaviorGroup; }
