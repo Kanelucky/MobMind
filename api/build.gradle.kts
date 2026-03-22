@@ -24,7 +24,7 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifactId = "MobMind-api"
+            artifactId = "api"
         }
     }
 }

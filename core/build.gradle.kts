@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.kanelucky"
-version = "0.1.0"
+version = "0.1.1"
 
 repositories {
     mavenCentral()
@@ -22,7 +22,7 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifactId = "MobMind-core"
+            artifactId = "core"
         }
     }
 }
