@@ -28,13 +28,10 @@ class NearestFeedingPlayerSensor(
     override fun sense(entity: EntityCreature) {
         if (entity !is IntelligentEntity) return
         if (entity !is Feedable) return
-        val rangeSq = range * range
-        val nearest = entity.instance?.entities
+        val nearest = entity.instance
+            ?.getNearbyEntities(entity.position, range)
             ?.filterIsInstance<Player>()
-            ?.filter { player ->
-                player.position.distanceSquared(entity.position) <= rangeSq &&
-                        entity.isBreedingItem(player.itemInMainHand)
-            }
+            ?.filter { entity.isBreedingItem(it.itemInMainHand) }
             ?.minByOrNull { it.position.distanceSquared(entity.position) }
         entity.behaviorGroup.memoryStorage.set(MemoryTypes.NEAREST_FEEDING_PLAYER, nearest)
     }
