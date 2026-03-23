@@ -7,7 +7,7 @@ The internal implementation module for MobMind.
 
 ## Dependency
 ```kotlin
-runtimeOnly("com.github.Kanelucky.MobMind:core:0.1.1")
+implementation("com.github.Kanelucky.MobMind:core:0.1.1")
 ```
 
 ## Startup

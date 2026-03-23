@@ -41,7 +41,7 @@ repositories {
 
 dependencies {
     implementation("com.github.Kanelucky.MobMind:api:0.1.1")
-    runtimeOnly("com.github.Kanelucky.MobMind:core:0.1.1")
+    implementation("com.github.Kanelucky.MobMind:core:0.1.1")
 }
 ```
 
