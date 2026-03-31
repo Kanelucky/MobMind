@@ -12,6 +12,8 @@ import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.block.Block;
 import org.kanelucky.mobmind.api.MobMind;
 import org.kanelucky.mobmind.core.CoreInitializer;
+import org.kanelucky.mobmind.vanilla.hostile.VanillaSkeleton;
+import org.kanelucky.mobmind.vanilla.hostile.VanillaZombie;
 
 public class ExampleServer {
     public static void main(String[] args) {
@@ -44,17 +46,18 @@ public class ExampleServer {
                 e.printStackTrace();
             }
             try {
-                ExampleZombie zombie = new ExampleZombie();
+                VanillaZombie zombie = new VanillaZombie();
                 zombie.setInstance(instanceContainer, new Pos(0, 40, 0));
             } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
-                IronGuardian ironGuardian = new IronGuardian();
-                ironGuardian.setInstance(instanceContainer, new Pos(0, 40, 0));
+                VanillaSkeleton skeleton = new VanillaSkeleton();
+                skeleton.setInstance(instanceContainer, new Pos(10, 40, 10));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         });
 
         // Start the server on port 25565

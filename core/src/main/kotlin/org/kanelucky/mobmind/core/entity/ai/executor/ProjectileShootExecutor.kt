@@ -1,5 +1,6 @@
 package org.kanelucky.mobmind.core.entity.ai.executor
 
+import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.EntityCreature
