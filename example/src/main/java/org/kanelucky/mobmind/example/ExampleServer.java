@@ -37,7 +37,7 @@ public class ExampleServer {
         globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
             final Player player = event.getPlayer();
             player.setRespawnPoint(new Pos(0, 40, 0));
-            player.setGameMode(GameMode.CREATIVE);
+            player.setGameMode(GameMode.SURVIVAL);
             event.setSpawningInstance(instanceContainer);
         });
 
@@ -46,6 +46,8 @@ public class ExampleServer {
             sheep.setInstance(instanceContainer, new Pos(0, 40, 0));
             VanillaHorse horse = new VanillaHorse();
             horse.setInstance(instanceContainer, new Pos(10, 40, 10));
+            VanillaZombie zombie = new VanillaZombie();
+            zombie.setInstance(instanceContainer, new Pos(20, 40, 20));
         });
 
         // Start the server on port 25565
