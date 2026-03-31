@@ -28,7 +28,7 @@ public class VanillaSkeleton extends HostileMob {
 
     @Override
     public Key getMobKey() {
-        return Key.key("minestom4fun", "skeleton");
+        return Key.key("minecraft", "skeleton");
     }
 
     @Override
