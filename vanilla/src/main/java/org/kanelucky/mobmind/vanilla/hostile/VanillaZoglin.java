@@ -18,7 +18,7 @@ public class VanillaZoglin extends HostileMob {
 
     @Override
     public SoundEvent getHurtSound() {
-        return SoundEvent.ENTITY_WITCH_HURT;
+        return SoundEvent.ENTITY_ZOGLIN_HURT;
     }
 
     @Override protected double getBaseHealth() { return 40.0; }
