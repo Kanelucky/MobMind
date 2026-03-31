@@ -14,6 +14,8 @@ import org.kanelucky.mobmind.api.MobMind;
 import org.kanelucky.mobmind.core.CoreInitializer;
 import org.kanelucky.mobmind.vanilla.hostile.VanillaSkeleton;
 import org.kanelucky.mobmind.vanilla.hostile.VanillaZombie;
+import org.kanelucky.mobmind.vanilla.passive.VanillaHorse;
+import org.kanelucky.mobmind.vanilla.passive.VanillaSheep;
 
 public class ExampleServer {
     public static void main(String[] args) {
@@ -35,29 +37,15 @@ public class ExampleServer {
         globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
             final Player player = event.getPlayer();
             player.setRespawnPoint(new Pos(0, 40, 0));
-            player.setGameMode(GameMode.SURVIVAL);
+            player.setGameMode(GameMode.CREATIVE);
             event.setSpawningInstance(instanceContainer);
         });
-        globalEventHandler.addListener(PlayerSpawnEvent.class, event -> {
-            try {
-                ExampleSheep sheep = new ExampleSheep();
-                sheep.setInstance(instanceContainer, new Pos(0, 40, 0));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                VanillaZombie zombie = new VanillaZombie();
-                zombie.setInstance(instanceContainer, new Pos(0, 40, 0));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                VanillaSkeleton skeleton = new VanillaSkeleton();
-                skeleton.setInstance(instanceContainer, new Pos(10, 40, 10));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
+        globalEventHandler.addListener(PlayerSpawnEvent.class, event -> {
+            VanillaSheep sheep = new VanillaSheep();
+            sheep.setInstance(instanceContainer, new Pos(0, 40, 0));
+            VanillaHorse horse = new VanillaHorse();
+            horse.setInstance(instanceContainer, new Pos(10, 40, 10));
         });
 
         // Start the server on port 25565
