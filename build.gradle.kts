@@ -1,13 +1,9 @@
 plugins {
-    kotlin("jvm") version "2.3.0"
+    kotlin("jvm") version libs.versions.kotlin.get()
 }
 
 group = "org.kanelucky"
 version = "0.1.2"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     testImplementation(kotlin("test"))

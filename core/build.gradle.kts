@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.3.0"
+    kotlin("jvm") version libs.versions.kotlin.get()
     id("java-library")
     id("maven-publish")
 }
@@ -7,13 +7,9 @@ plugins {
 group = "org.kanelucky"
 version = "0.1.2"
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    compileOnly("net.minestom:minestom:2026.03.03-1.21.11")
-    implementation("it.unimi.dsi:fastutil:8.5.15")
+    compileOnly(libs.minestom)
+    implementation(libs.fastutil)
     implementation(project(":api"))
     testImplementation(kotlin("test"))
 }
