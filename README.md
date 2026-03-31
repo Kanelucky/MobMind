@@ -21,7 +21,7 @@ A flexible, modular entity ai library for [Minestom](https://minestom.net/) serv
 ```
 api/     ← Interfaces and factories. Only touch this
 core/    ← Implementations. Never import directly
-example/ ← Full example Minestom server with sheep and zombie and custom entity
+example/ ← Full example Minestom server with some simple entities
 ```
 
 Dev code depends only on `api`. `core` is a runtime implementation detail
