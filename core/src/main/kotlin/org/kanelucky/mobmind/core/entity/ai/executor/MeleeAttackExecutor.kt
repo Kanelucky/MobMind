@@ -2,6 +2,7 @@ package org.kanelucky.mobmind.core.entity.ai.executor
 
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.EntityCreature
+import net.minestom.server.entity.LivingEntity
 import net.minestom.server.entity.attribute.Attribute
 import net.minestom.server.entity.damage.Damage
 import org.kanelucky.mobmind.api.entity.IntelligentEntity
@@ -31,7 +32,8 @@ open class MeleeAttackExecutor(
     private val maxSenseRangeSq: Double = 256.0,
     private val attackRangeSq: Double = 2.5,
     private val attackCooldown: Int = 20,
-    private val clearDataWhenLose: Boolean = false
+    private val clearDataWhenLose: Boolean = false,
+    private val attackCallback: ((EntityCreature, LivingEntity) -> Unit)? = null
 ) : BehaviorExecutor {
 
     private var attackTick = 0
@@ -101,5 +103,7 @@ open class MeleeAttackExecutor(
      * Called after a successful attack.
      * Override to add effects, sounds, animations, etc.
      */
-    protected open fun onAttack(attacker: EntityCreature, target: net.minestom.server.entity.Entity) {}
+    protected open fun onAttack(attacker: EntityCreature, target: LivingEntity) {
+        attackCallback?.invoke(attacker, target)
+    }
 }

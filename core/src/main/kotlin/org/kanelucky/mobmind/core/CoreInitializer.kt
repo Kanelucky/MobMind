@@ -12,6 +12,7 @@ import org.kanelucky.mobmind.api.entity.ai.evaluator.Evaluators
 import org.kanelucky.mobmind.api.entity.ai.executor.EatGrassCallback
 import org.kanelucky.mobmind.api.entity.ai.executor.ExecutorFactory
 import org.kanelucky.mobmind.api.entity.ai.executor.Executors
+import org.kanelucky.mobmind.api.entity.ai.executor.MeleeAttackCallback
 import org.kanelucky.mobmind.api.entity.ai.executor.ProjectileSupplier
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
 import org.kanelucky.mobmind.api.entity.ai.sensor.SensorFactory
@@ -93,8 +94,11 @@ class CoreInitializer : MobMindInitializer {
                 maxSenseRangeSq: Double,
                 attackRangeSq: Double,
                 attackCooldown: Int,
-                clearDataWhenLose: Boolean
-            ) = MeleeAttackExecutor(memory, speed, normalSpeed, maxSenseRangeSq, attackRangeSq, attackCooldown, clearDataWhenLose)
+                clearDataWhenLose: Boolean,
+                callback: MeleeAttackCallback?
+            ) = MeleeAttackExecutor(memory, speed, normalSpeed, maxSenseRangeSq, attackRangeSq, attackCooldown, clearDataWhenLose) {
+                    attacker, target -> callback?.onAttack(attacker, target)
+            }
 
             override fun beamAttack(
                 targetMemory: MemoryType<out Any?>,

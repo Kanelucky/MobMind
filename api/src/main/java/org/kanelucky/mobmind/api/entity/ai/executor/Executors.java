@@ -79,14 +79,33 @@ public final class Executors {
         return factory().moveToTarget(memory, speed, normalSpeed, maxRangeSq, minRangeSq);
     }
 
+//    public static BehaviorExecutor meleeAttack(MemoryType<?> memory) {
+//        return factory().meleeAttack(memory, 0.15, 0.1, 256.0, 2.5, 20, false);
+//    }
+//
+//    public static BehaviorExecutor meleeAttack(MemoryType<?> memory, double speed, double normalSpeed,
+//                                               double maxSenseRangeSq, double attackRangeSq,
+//                                               int attackCooldown, boolean clearDataWhenLose) {
+//        return factory().meleeAttack(memory, speed, normalSpeed, maxSenseRangeSq, attackRangeSq, attackCooldown, clearDataWhenLose);
+//    }
+
     public static BehaviorExecutor meleeAttack(MemoryType<?> memory) {
-        return factory().meleeAttack(memory, 0.15, 0.1, 256.0, 2.5, 20, false);
+        return factory().meleeAttack(memory, 0.1, 0.1, 256.0, 2.5, 20, false, null);
     }
 
     public static BehaviorExecutor meleeAttack(MemoryType<?> memory, double speed, double normalSpeed,
                                                double maxSenseRangeSq, double attackRangeSq,
                                                int attackCooldown, boolean clearDataWhenLose) {
-        return factory().meleeAttack(memory, speed, normalSpeed, maxSenseRangeSq, attackRangeSq, attackCooldown, clearDataWhenLose);
+        return factory().meleeAttack(memory, speed, normalSpeed, maxSenseRangeSq,
+                attackRangeSq, attackCooldown, clearDataWhenLose, null);
+    }
+
+    public static BehaviorExecutor meleeAttack(MemoryType<?> memory, double speed, double normalSpeed,
+                                               double maxSenseRangeSq, double attackRangeSq,
+                                               int attackCooldown, boolean clearDataWhenLose,
+                                               MeleeAttackCallback callback) {
+        return factory().meleeAttack(memory, speed, normalSpeed, maxSenseRangeSq,
+                attackRangeSq, attackCooldown, clearDataWhenLose, callback);
     }
 
     public static BehaviorExecutor beamAttack(MemoryType<?> targetMemory) {

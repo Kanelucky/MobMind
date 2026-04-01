@@ -2,8 +2,19 @@ package org.kanelucky.mobmind.vanilla.hostile;
 
 import net.kyori.adventure.key.Key;
 import net.minestom.server.entity.EntityType;
+import net.minestom.server.entity.LivingEntity;
+import net.minestom.server.entity.damage.Damage;
+import net.minestom.server.entity.metadata.monster.zombie.ZombieMeta;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
+import org.jetbrains.annotations.NotNull;
+import org.kanelucky.mobmind.api.entity.IntelligentEntity;
+import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorImpl;
+import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup;
+import org.kanelucky.mobmind.api.entity.ai.evaluator.Evaluators;
+import org.kanelucky.mobmind.api.entity.ai.executor.Executors;
+import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes;
+import org.kanelucky.mobmind.api.entity.ai.sensor.Sensors;
 import org.kanelucky.mobmind.vanilla.HostileMob;
 
 import java.util.Set;
@@ -27,5 +38,32 @@ public class VanillaZombie extends HostileMob {
     @Override protected double getBaseHealth() { return 20.0; }
     @Override protected double getBaseAttack() { return 3.0; }
     @Override protected double getBaseMoveSpeed() { return 0.1; }
+
+    @Override
+    protected BehaviorGroup buildBaseBehaviorGroup() {
+        return addBaseBehaviors(BehaviorGroup.builder())
+                .behavior(
+                        BehaviorImpl.builder()
+                                .executor(Executors.meleeAttack(
+                                        MemoryTypes.NEAREST_PLAYER,
+                                        0.1,
+                                        0.1,
+                                        256.0,
+                                        2.5,
+                                        20,
+                                        false,
+                                        (attacker, target) -> {
+                                            if (attacker instanceof LivingEntity le) le.swingMainHand();
+                                        }
+                                ))
+                                .evaluator(entity -> {
+                                    if (!(entity instanceof IntelligentEntity e)) return false;
+                                    return e.getBehaviorGroup().getMemoryStorage()
+                                            .get(MemoryTypes.NEAREST_PLAYER) != null;
+                                })
+                                .priority(3).period(1).build()
+                )
+                .build();
+    }
 }
 

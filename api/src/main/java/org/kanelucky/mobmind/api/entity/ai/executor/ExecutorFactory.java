@@ -2,6 +2,7 @@ package org.kanelucky.mobmind.api.entity.ai.executor;
 
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType;
 
 public interface ExecutorFactory {
@@ -22,7 +23,8 @@ public interface ExecutorFactory {
                                   double maxRangeSq, double minRangeSq);
     BehaviorExecutor meleeAttack(MemoryType<?> memory, double speed, double normalSpeed,
                                  double maxSenseRangeSq, double attackRangeSq,
-                                 int attackCooldown, boolean clearDataWhenLose);
+                                 int attackCooldown, boolean clearDataWhenLose,
+                                 @Nullable MeleeAttackCallback callback);
 
     BehaviorExecutor beamAttack(MemoryType<?> targetMemory, double maxRangeSq,
                                 int coolDownTick, int attackDelay, boolean clearDataWhenLose);
