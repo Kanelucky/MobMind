@@ -2,6 +2,7 @@ package org.kanelucky.mobmind.core.entity.ai.controller
 
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.entity.pathfinding.PPath
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity
 import org.kanelucky.mobmind.api.entity.ai.controller.Controller
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes

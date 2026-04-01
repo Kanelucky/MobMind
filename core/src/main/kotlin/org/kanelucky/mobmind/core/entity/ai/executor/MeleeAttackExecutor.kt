@@ -5,10 +5,10 @@ import net.minestom.server.entity.EntityCreature
 import net.minestom.server.entity.LivingEntity
 import net.minestom.server.entity.attribute.Attribute
 import net.minestom.server.entity.damage.Damage
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity
 import org.kanelucky.mobmind.api.entity.ai.executor.BehaviorExecutor
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
-import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes
 
 /**
  * Universal melee attack executor.

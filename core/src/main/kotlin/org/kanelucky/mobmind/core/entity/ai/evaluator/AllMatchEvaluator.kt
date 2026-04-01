@@ -1,6 +1,7 @@
 package org.kanelucky.mobmind.core.entity.ai.evaluator
 
 import net.minestom.server.entity.EntityCreature
+
 import org.kanelucky.mobmind.api.entity.ai.evaluator.BehaviorEvaluator
 
 

@@ -1,6 +1,7 @@
 package org.kanelucky.mobmind.core.entity.ai.behaviorgroup
 
 import net.minestom.server.entity.EntityCreature
+
 import org.kanelucky.mobmind.api.entity.ai.behavior.Behavior
 import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorState
 import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup

@@ -3,8 +3,10 @@ package org.kanelucky.mobmind.core.entity.ai.route.finder
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.instance.Instance
+
 import org.kanelucky.mobmind.core.entity.ai.route.Node
 import org.kanelucky.mobmind.core.entity.ai.route.posevaluator.SpacePosEvaluator
+
 import kotlin.math.*
 
 /**

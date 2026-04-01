@@ -1,11 +1,14 @@
 package org.kanelucky.mobmind.vanilla.hostile;
 
 import net.kyori.adventure.key.Key;
+
 import net.minestom.server.entity.EntityProjectile;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+
 import net.minestom.server.sound.SoundEvent;
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity;
 import org.kanelucky.mobmind.api.entity.ai.behavior.Behavior;
 import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorImpl;

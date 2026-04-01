@@ -1,12 +1,11 @@
 package org.kanelucky.mobmind.core.entity.ai.executor
 
-import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
-import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.entity.EntityProjectile
 import net.minestom.server.entity.LivingEntity
 import net.minestom.server.entity.attribute.Attribute
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity
 import org.kanelucky.mobmind.api.entity.ai.executor.BehaviorExecutor
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType

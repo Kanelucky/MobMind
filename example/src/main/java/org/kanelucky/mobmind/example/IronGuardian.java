@@ -2,19 +2,21 @@ package org.kanelucky.mobmind.example;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
+
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.damage.Damage;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity;
 import org.kanelucky.mobmind.api.entity.ai.behavior.Behavior;
 import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorImpl;
 import org.kanelucky.mobmind.api.entity.ai.behavior.Behaviors;
 import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup;
 import org.kanelucky.mobmind.api.entity.ai.controller.Controllers;
-import org.kanelucky.mobmind.api.entity.ai.evaluator.Evaluators;
 import org.kanelucky.mobmind.api.entity.ai.executor.Executors;
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes;
 import org.kanelucky.mobmind.api.entity.ai.sensor.Sensors;

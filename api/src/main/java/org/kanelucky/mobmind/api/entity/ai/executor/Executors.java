@@ -79,16 +79,6 @@ public final class Executors {
         return factory().moveToTarget(memory, speed, normalSpeed, maxRangeSq, minRangeSq);
     }
 
-//    public static BehaviorExecutor meleeAttack(MemoryType<?> memory) {
-//        return factory().meleeAttack(memory, 0.15, 0.1, 256.0, 2.5, 20, false);
-//    }
-//
-//    public static BehaviorExecutor meleeAttack(MemoryType<?> memory, double speed, double normalSpeed,
-//                                               double maxSenseRangeSq, double attackRangeSq,
-//                                               int attackCooldown, boolean clearDataWhenLose) {
-//        return factory().meleeAttack(memory, speed, normalSpeed, maxSenseRangeSq, attackRangeSq, attackCooldown, clearDataWhenLose);
-//    }
-
     public static BehaviorExecutor meleeAttack(MemoryType<?> memory) {
         return factory().meleeAttack(memory, 0.1, 0.1, 256.0, 2.5, 20, false, null);
     }

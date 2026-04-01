@@ -10,9 +10,9 @@ import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.instance.block.Block;
+
 import org.kanelucky.mobmind.api.MobMind;
 import org.kanelucky.mobmind.core.CoreInitializer;
-import org.kanelucky.mobmind.vanilla.hostile.VanillaSkeleton;
 import org.kanelucky.mobmind.vanilla.hostile.VanillaZombie;
 import org.kanelucky.mobmind.vanilla.passive.VanillaHorse;
 import org.kanelucky.mobmind.vanilla.passive.VanillaSheep;

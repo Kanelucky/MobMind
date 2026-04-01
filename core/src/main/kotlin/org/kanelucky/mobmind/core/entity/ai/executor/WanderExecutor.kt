@@ -1,9 +1,11 @@
 package org.kanelucky.mobmind.core.entity.ai.executor
 
 import net.minestom.server.entity.EntityCreature
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity
 import org.kanelucky.mobmind.api.entity.ai.executor.BehaviorExecutor
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes
+
 import kotlin.random.Random
 
 /**

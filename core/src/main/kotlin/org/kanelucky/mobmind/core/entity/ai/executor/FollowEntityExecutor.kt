@@ -4,6 +4,7 @@ import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.Entity
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.entity.attribute.Attribute
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity
 import org.kanelucky.mobmind.api.entity.ai.executor.BehaviorExecutor
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType

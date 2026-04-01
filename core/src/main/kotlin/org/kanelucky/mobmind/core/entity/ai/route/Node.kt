@@ -1,6 +1,7 @@
 package org.kanelucky.mobmind.core.entity.ai.route
 
 import net.minestom.server.coordinate.Vec
+
 import kotlin.math.floor
 
 /**

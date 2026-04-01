@@ -5,7 +5,9 @@ import net.kyori.adventure.sound.Sound;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.damage.Damage;
 import net.minestom.server.sound.SoundEvent;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity;
 
 public abstract class MobEntity extends IntelligentEntity {

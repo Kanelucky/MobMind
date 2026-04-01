@@ -1,7 +1,7 @@
 package org.kanelucky.mobmind.vanilla;
 
-
 import net.minestom.server.entity.EntityType;
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity;
 import org.kanelucky.mobmind.api.entity.ai.Breedable;
 import org.kanelucky.mobmind.api.entity.ai.Feedable;

@@ -1,20 +1,16 @@
 package org.kanelucky.mobmind.vanilla.hostile;
 
 import net.kyori.adventure.key.Key;
+
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.LivingEntity;
-import net.minestom.server.entity.damage.Damage;
-import net.minestom.server.entity.metadata.monster.zombie.ZombieMeta;
-import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
-import org.jetbrains.annotations.NotNull;
+
 import org.kanelucky.mobmind.api.entity.IntelligentEntity;
 import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorImpl;
 import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup;
-import org.kanelucky.mobmind.api.entity.ai.evaluator.Evaluators;
 import org.kanelucky.mobmind.api.entity.ai.executor.Executors;
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes;
-import org.kanelucky.mobmind.api.entity.ai.sensor.Sensors;
 import org.kanelucky.mobmind.vanilla.HostileMob;
 
 import java.util.Set;

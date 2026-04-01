@@ -1,9 +1,11 @@
 package org.kanelucky.mobmind.vanilla.passive;
 
 import net.kyori.adventure.key.Key;
+
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
+
 import org.kanelucky.mobmind.vanilla.PassiveMob;
 
 import java.util.Set;

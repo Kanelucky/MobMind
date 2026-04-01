@@ -2,7 +2,9 @@ package org.kanelucky.mobmind.core.entity.ai.executor
 
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.instance.block.Block
+
 import org.kanelucky.mobmind.api.entity.ai.executor.BehaviorExecutor
+
 import kotlin.math.floor
 
 /**

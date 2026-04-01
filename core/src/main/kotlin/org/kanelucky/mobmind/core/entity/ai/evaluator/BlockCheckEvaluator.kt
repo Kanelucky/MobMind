@@ -2,6 +2,7 @@ package org.kanelucky.mobmind.core.entity.ai.evaluator
 
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.instance.block.Block
+
 import org.kanelucky.mobmind.api.entity.ai.evaluator.BehaviorEvaluator
 import kotlin.math.floor
 

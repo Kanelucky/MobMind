@@ -2,7 +2,9 @@ package org.kanelucky.mobmind.core.entity.ai.controller
 
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.instance.block.Block
+
 import org.kanelucky.mobmind.api.entity.ai.controller.Controller
+
 import kotlin.random.Random
 
 /**

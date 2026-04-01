@@ -2,9 +2,12 @@ package org.kanelucky.mobmind.core.entity.ai.route.finder
 
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.instance.Instance
+
 import org.kanelucky.mobmind.core.entity.ai.route.Node
 import org.kanelucky.mobmind.core.entity.ai.route.posevaluator.GroundPosEvaluator
+
 import java.util.PriorityQueue
+
 import kotlin.math.*
 
 /**
