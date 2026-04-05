@@ -130,4 +130,15 @@ public final class Executors {
                                         double jumpPower, double jumpPowerVariance) {
         return factory().jump(jumpInterval, jumpDelay, jumpPower, jumpPowerVariance);
     }
+
+    public static BehaviorExecutor flee(MemoryType<?> targetMemory) {
+        return factory().flee(targetMemory, 0.15, 0.1, 64.0, 256.0, 10);
+    }
+
+    public static BehaviorExecutor flee(MemoryType<?> targetMemory, double fleeSpeed,
+                                        double normalSpeed, double minFleeRangeSq,
+                                        double maxFleeRangeSq, int recalculateInterval) {
+        return factory().flee(targetMemory, fleeSpeed, normalSpeed,
+                minFleeRangeSq, maxFleeRangeSq, recalculateInterval);
+    }
 }

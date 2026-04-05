@@ -33,4 +33,7 @@ public interface ExecutorFactory {
 
     BehaviorExecutor jump(int jumpInterval, int jumpDelay, double jumpPower, double jumpPowerVariance);
 
+    BehaviorExecutor flee(MemoryType<?> targetMemory, double fleeSpeed, double normalSpeed,
+                          double minFleeRangeSq, double maxFleeRangeSq, int recalculateInterval);
+
 }

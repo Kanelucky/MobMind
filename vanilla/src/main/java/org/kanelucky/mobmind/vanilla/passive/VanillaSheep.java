@@ -7,11 +7,13 @@ import net.minestom.server.entity.EntityType;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
 
+import org.kanelucky.mobmind.api.entity.IntelligentEntity;
 import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorImpl;
 import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup;
 import org.kanelucky.mobmind.api.entity.ai.evaluator.Evaluators;
 import org.kanelucky.mobmind.api.entity.ai.executor.Executors;
 import org.kanelucky.mobmind.vanilla.PassiveMob;
+import org.kanelucky.mobmind.vanilla.memory.VanillaMemoryTypes;
 
 import java.util.Set;
 
@@ -66,6 +68,18 @@ public class VanillaSheep extends PassiveMob {
                                 .evaluator(Evaluators.probability(1, 200))
                                 .priority(2)
                                 .period(40)
+                                .build()
+                )
+                .behavior(
+                        BehaviorImpl.builder()
+                                .executor(Executors.flee(VanillaMemoryTypes.NEAREST_WOLF))
+                                .evaluator(entity -> {
+                                    if (!(entity instanceof IntelligentEntity e)) return false;
+                                    return e.getBehaviorGroup().getMemoryStorage()
+                                            .get(VanillaMemoryTypes.NEAREST_WOLF) != null;
+                                })
+                                .priority(5)
+                                .period(1)
                                 .build()
                 )
                 .build();

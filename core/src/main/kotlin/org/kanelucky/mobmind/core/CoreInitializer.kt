@@ -128,6 +128,15 @@ class CoreInitializer : MobMindInitializer {
                 jumpPower: Double,
                 jumpPowerVariance: Double
             ) = JumpExecutor(jumpInterval, jumpDelay, jumpPower, jumpPowerVariance)
+
+            override fun flee(
+                targetMemory: MemoryType<out Any?>,
+                fleeSpeed: Double,
+                normalSpeed: Double,
+                minFleeRangeSq: Double,
+                maxFleeRangeSq: Double,
+                recalculateInterval: Int
+            ) = FleeExecutor(targetMemory, fleeSpeed, normalSpeed, minFleeRangeSq, maxFleeRangeSq, recalculateInterval)
         })
 
         Evaluators.register(object : EvaluatorFactory {
