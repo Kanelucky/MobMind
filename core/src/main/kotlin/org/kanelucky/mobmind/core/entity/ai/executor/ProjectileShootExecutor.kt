@@ -70,8 +70,13 @@ open class ProjectileShootExecutor(
         } else {
             EntityControlHelper.removeRouteTarget(entity)
         }
-        EntityControlHelper.setLookTarget(entity,
-            Pos(currentTarget.position.x(), currentTarget.position.y() + currentTarget.eyeHeight, currentTarget.position.z())
+        EntityControlHelper.setLookTarget(
+            entity,
+            Pos(
+                currentTarget.position.x(),
+                currentTarget.position.y() + currentTarget.eyeHeight,
+                currentTarget.position.z()
+            )
         )
 
         if (tick2 == 0 && tick1 > coolDownTick) {

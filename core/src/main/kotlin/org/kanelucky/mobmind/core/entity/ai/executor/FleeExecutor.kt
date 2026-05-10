@@ -86,7 +86,8 @@ open class FleeExecutor(
 
         if (length == 0.0) {
             val angle = Random.nextDouble() * 2 * Math.PI
-            fleeToward(entity, instance,
+            fleeToward(
+                entity, instance,
                 entity.position.x() + cos(angle) * 8,
                 entity.position.z() + sin(angle) * 8
             )

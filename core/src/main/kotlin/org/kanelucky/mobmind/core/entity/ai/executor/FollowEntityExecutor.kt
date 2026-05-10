@@ -60,7 +60,8 @@ class FollowEntityExecutor(
             EntityControlHelper.removeRouteTarget(entity)
         }
 
-        EntityControlHelper.setLookTarget(entity,
+        EntityControlHelper.setLookTarget(
+            entity,
             Pos(targetPos.x(), targetPos.y() + target.eyeHeight, targetPos.z())
         )
         return true

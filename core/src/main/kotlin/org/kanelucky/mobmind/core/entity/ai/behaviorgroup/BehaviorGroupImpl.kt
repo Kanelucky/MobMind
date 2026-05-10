@@ -32,17 +32,17 @@ class BehaviorGroupImpl(
 
     private var entity: EntityCreature? = null
 
-    private val sensorCounters       = mutableMapOf<Sensor, Int>()
-    private val coreBehaviorCounters  = mutableMapOf<Behavior, Int>()
-    private val behaviorCounters      = mutableMapOf<Behavior, Int>()
-    private val runningCoreBehaviors  = linkedSetOf<Behavior>()
-    private val runningBehaviors      = linkedSetOf<Behavior>()
+    private val sensorCounters = mutableMapOf<Sensor, Int>()
+    private val coreBehaviorCounters = mutableMapOf<Behavior, Int>()
+    private val behaviorCounters = mutableMapOf<Behavior, Int>()
+    private val runningCoreBehaviors = linkedSetOf<Behavior>()
+    private val runningBehaviors = linkedSetOf<Behavior>()
 
     override fun setEntity(entity: EntityCreature) {
         this.entity = entity
-        sensors.forEach      { sensorCounters[it] = 0 }
+        sensors.forEach { sensorCounters[it] = 0 }
         coreBehaviors.forEach { coreBehaviorCounters[it] = 0 }
-        behaviors.forEach    { behaviorCounters[it] = 0 }
+        behaviors.forEach { behaviorCounters[it] = 0 }
     }
 
     override fun tick() {
@@ -98,6 +98,7 @@ class BehaviorGroupImpl(
                     highestPriority = behavior.priority
                     candidates.add(behavior)
                 }
+
                 behavior.priority == highestPriority -> candidates.add(behavior)
             }
         }
@@ -110,6 +111,7 @@ class BehaviorGroupImpl(
                 interruptRunningBehaviors(entity)
                 startBehaviors(entity, candidates)
             }
+
             highestPriority == runningPriority -> startBehaviors(entity, candidates)
         }
     }
@@ -141,15 +143,15 @@ class BehaviorGroupImpl(
 
     class Builder : BehaviorGroupBuilder {
         private val coreBehaviors = linkedSetOf<Behavior>()
-        private val behaviors     = linkedSetOf<Behavior>()
-        private val sensors       = linkedSetOf<Sensor>()
-        private val controllers   = linkedSetOf<Controller>()
+        private val behaviors = linkedSetOf<Behavior>()
+        private val sensors = linkedSetOf<Sensor>()
+        private val controllers = linkedSetOf<Controller>()
         private var memoryStorage: MemoryStorage = MemoryStorageImpl()
 
-        override fun coreBehavior(b: Behavior)      = apply { coreBehaviors.add(b) }
-        override fun behavior(b: Behavior)           = apply { behaviors.add(b) }
-        override fun sensor(s: Sensor)               = apply { sensors.add(s) }
-        override fun controller(c: Controller)       = apply { controllers.add(c) }
+        override fun coreBehavior(b: Behavior) = apply { coreBehaviors.add(b) }
+        override fun behavior(b: Behavior) = apply { behaviors.add(b) }
+        override fun sensor(s: Sensor) = apply { sensors.add(s) }
+        override fun controller(c: Controller) = apply { controllers.add(c) }
         override fun memoryStorage(m: MemoryStorage) = apply { memoryStorage = m }
 
         override fun build(): BehaviorGroup =

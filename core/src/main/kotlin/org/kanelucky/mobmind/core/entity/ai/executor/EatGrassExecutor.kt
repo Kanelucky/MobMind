@@ -40,6 +40,7 @@ open class EatGrassExecutor(private val duration: Int = 40) : BehaviorExecutor {
                 instance.setBlock(x, y, z, Block.AIR)
                 onEatGrass(entity)
             }
+
             instance.getBlock(x, y - 1, z) == Block.GRASS_BLOCK -> {
                 instance.setBlock(x, y - 1, z, Block.DIRT)
                 onEatGrass(entity)

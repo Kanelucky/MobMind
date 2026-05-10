@@ -3,8 +3,10 @@ package org.kanelucky.mobmind.example;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 
+import net.minestom.server.entity.EntityProjectile;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.damage.Damage;
+import net.minestom.server.entity.metadata.item.SnowballMeta;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
@@ -45,9 +47,20 @@ public class IronGuardian extends IntelligentEntity {
         return Key.key("mobmind", "iron_guardian");
     }
 
-    @Override protected double getBaseHealth() { return 60.0; }
-    @Override protected double getBaseAttack() { return 8.0; }
-    @Override protected double getBaseMoveSpeed() { return 0.12; }
+    @Override
+    protected double getBaseHealth() {
+        return 60.0;
+    }
+
+    @Override
+    protected double getBaseAttack() {
+        return 8.0;
+    }
+
+    @Override
+    protected double getBaseMoveSpeed() {
+        return 0.12;
+    }
 
     protected SoundEvent getHurtSound() {
         return SoundEvent.ENTITY_IRON_GOLEM_HURT;
@@ -61,10 +74,10 @@ public class IronGuardian extends IntelligentEntity {
     public boolean damage(@NotNull Damage damage) {
         boolean result = super.damage(damage);
         if (result && getInstance() != null) {
-            getInstance().playSound(
-                    Sound.sound(getHurtSound(), Sound.Source.HOSTILE, 1f, 1f),
-                    getPosition()
-            );
+            getInstance().playSound(Sound.sound(getHurtSound(),
+                                                Sound.Source.HOSTILE,
+                                                1f,
+                                                1f), getPosition());
         }
         return result;
     }
@@ -75,91 +88,115 @@ public class IronGuardian extends IntelligentEntity {
     }
 
     @Override
-    public BehaviorGroup getBehaviorGroup() { return behaviorGroup; }
+    public BehaviorGroup getBehaviorGroup() {
+        return behaviorGroup;
+    }
 
     private BehaviorGroup buildBehaviorGroup() {
         return BehaviorGroup.builder()
-                .sensor(Sensors.nearestPlayer(24.0, 0.0, 20))
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.beamAttack(MemoryTypes.NEAREST_PLAYER, 576.0, 40, 20, false))
-                                .evaluator(entity -> {
-                                    if (!(entity instanceof IntelligentEntity e)) return false;
-                                    return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.NEAREST_PLAYER) != null;
-                                })
-                                .priority(3)
-                                .period(1)
-                                .build()
-                )
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.shootProjectile(
-                                        MemoryTypes.NEAREST_PLAYER,
-                                        0.1, 0.1, 576.0, 60, 20, false,
-                                        shooter -> {
-                                            var projectile = new net.minestom.server.entity.EntityProjectile(shooter, EntityType.SNOWBALL);
-                                            var meta = (net.minestom.server.entity.metadata.item.SnowballMeta) projectile.getEntityMeta();
-                                            meta.setItem(ItemStack.of(Material.SNOWBALL));
-                                            return projectile;
-                                        }
-                                ))
-                                .evaluator(entity -> {
-                                    if (!(entity instanceof IntelligentEntity e)) return false;
-                                    return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.NEAREST_PLAYER) != null;
-                                })
-                                .priority(2)
-                                .period(1)
-                                .build()
-                )
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.jump(80, 10, 0.8, 0.4))
-                                .evaluator(entity -> true)
-                                .priority(1)
-                                .period(1)
-                                .build()
-                )
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.meleeAttack(
-                                        MemoryTypes.NEAREST_PLAYER,
-                                        0.12, 0.1,
-                                        576.0, // 24 blocks
-                                        3.0,   // attack range
-                                        15,    // fast attack
-                                        false
-                                ))
-                                .evaluator(entity -> {
-                                    if (!(entity instanceof IntelligentEntity e)) return false;
-                                    return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.NEAREST_PLAYER) != null;
-                                })
-                                .priority(2)
-                                .period(1)
-                                .build()
-                )
-                .behavior(
-                        Behaviors.weighted(
-                                Set.<Behavior>of(
-                                        BehaviorImpl.builder()
-                                                .executor(Executors.idle(40, 80))
+                            .sensor(Sensors.nearestPlayer(24.0, 0.0, 20))
+                            .behavior(BehaviorImpl.builder()
+                                                  .executor(Executors.beamAttack(
+                                                          MemoryTypes.NEAREST_PLAYER,
+                                                          576.0,
+                                                          40,
+                                                          20,
+                                                          false))
+                                                  .evaluator(entity -> {
+                                                      if (!(entity instanceof IntelligentEntity e))
+                                                          return false;
+                                                      return e.getBehaviorGroup()
+                                                              .getMemoryStorage()
+                                                              .get(MemoryTypes.NEAREST_PLAYER) != null;
+                                                  })
+                                                  .priority(3)
+                                                  .period(1)
+                                                  .build())
+                            .behavior(BehaviorImpl.builder()
+                                                  .executor(Executors.shootProjectile(
+                                                          MemoryTypes.NEAREST_PLAYER,
+                                                          0.1,
+                                                          0.1,
+                                                          576.0,
+                                                          60,
+                                                          20,
+                                                          false,
+                                                          shooter -> {
+                                                              var projectile = new EntityProjectile(
+                                                                      shooter,
+                                                                      EntityType.SNOWBALL);
+                                                              var meta = (SnowballMeta) projectile.getEntityMeta();
+                                                              meta.setItem(
+                                                                      ItemStack.of(
+                                                                              Material.SNOWBALL));
+                                                              return projectile;
+                                                          }))
+                                                  .evaluator(entity -> {
+                                                      if (!(entity instanceof IntelligentEntity e))
+                                                          return false;
+                                                      return e.getBehaviorGroup()
+                                                              .getMemoryStorage()
+                                                              .get(MemoryTypes.NEAREST_PLAYER) != null;
+                                                  })
+                                                  .priority(2)
+                                                  .period(1)
+                                                  .build())
+                            .behavior(BehaviorImpl.builder()
+                                                  .executor(Executors.jump(80,
+                                                                           10,
+                                                                           0.8,
+                                                                           0.4))
+                                                  .evaluator(entity -> true)
+                                                  .priority(1)
+                                                  .period(1)
+                                                  .build())
+                            .behavior(BehaviorImpl.builder()
+                                                  .executor(Executors.meleeAttack(
+                                                          MemoryTypes.NEAREST_PLAYER,
+                                                          0.12,
+                                                          0.1,
+                                                          576.0,
+                                                          // 24 blocks
+                                                          3.0,
+                                                          // attack range
+                                                          15,
+                                                          // fast attack
+                                                          false))
+                                                  .evaluator(entity -> {
+                                                      if (!(entity instanceof IntelligentEntity e))
+                                                          return false;
+                                                      return e.getBehaviorGroup()
+                                                              .getMemoryStorage()
+                                                              .get(MemoryTypes.NEAREST_PLAYER) != null;
+                                                  })
+                                                  .priority(2)
+                                                  .period(1)
+                                                  .build())
+                            .behavior(Behaviors.weighted(Set.<Behavior>of(
+                                    BehaviorImpl.builder()
+                                                .executor(Executors.idle(40,
+                                                                         80))
                                                 .evaluator(entity -> true)
                                                 .priority(1)
                                                 .weight(1)
                                                 .period(1)
                                                 .build(),
-                                        BehaviorImpl.builder()
-                                                .executor(Executors.roam(0.08, 0.08, 6, 20, true, 100, true, 10))
+                                    BehaviorImpl.builder()
+                                                .executor(Executors.roam(0.08,
+                                                                         0.08,
+                                                                         6,
+                                                                         20,
+                                                                         true,
+                                                                         100,
+                                                                         true,
+                                                                         10))
                                                 .evaluator(entity -> true)
                                                 .priority(1)
                                                 .weight(2)
                                                 .period(1)
-                                                .build()
-                                ),
-                                1, 40
-                        )
-                )
-                .controller(Controllers.walk())
-                .controller(Controllers.look())
-                .build();
+                                                .build()), 1, 40))
+                            .controller(Controllers.walk())
+                            .controller(Controllers.look())
+                            .build();
     }
 }

@@ -112,11 +112,15 @@ class FlatRandomRoamExecutor(
         val ty = pos.y()
 
         val chunk = instance.getChunkAt(tx, tz)
-        if (chunk == null || !chunk.isLoaded) { retryCount++; return }
+        if (chunk == null || !chunk.isLoaded) {
+            retryCount++; return
+        }
 
         if (avoidWater) {
             val block = instance.getBlock(floor(tx).toInt(), floor(ty).toInt() - 1, floor(tz).toInt())
-            if (isInvalidGround(block)) { retryCount++; return }
+            if (isInvalidGround(block)) {
+                retryCount++; return
+            }
         }
 
         val target = Pos(tx, ty, tz)

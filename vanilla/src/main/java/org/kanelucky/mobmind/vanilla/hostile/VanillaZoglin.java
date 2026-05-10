@@ -23,7 +23,18 @@ public class VanillaZoglin extends HostileMob {
         return SoundEvent.ENTITY_ZOGLIN_HURT;
     }
 
-    @Override protected double getBaseHealth() { return 40.0; }
-    @Override protected double getBaseAttack() { return 6.0; }
-    @Override protected double getBaseMoveSpeed() { return 0.3; }
+    @Override
+    protected double getBaseHealth() {
+        return 40.0;
+    }
+
+    @Override
+    protected double getBaseAttack() {
+        return 6.0;
+    }
+
+    @Override
+    protected double getBaseMoveSpeed() {
+        return 0.3;
+    }
 }

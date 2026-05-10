@@ -63,7 +63,8 @@ open class MeleeAttackExecutor(
             EntityControlHelper.setRouteTarget(entity, targetPos)
             lastTargetPos = targetPos
         }
-        EntityControlHelper.setLookTarget(entity,
+        EntityControlHelper.setLookTarget(
+            entity,
             Pos(target.position.x(), target.position.y() + target.eyeHeight, target.position.z())
         )
 

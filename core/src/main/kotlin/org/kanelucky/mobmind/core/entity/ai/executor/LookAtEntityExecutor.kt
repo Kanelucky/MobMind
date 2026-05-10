@@ -47,7 +47,8 @@ class LookAtEntityExecutor(
 
         val target = entity.behaviorGroup.memoryStorage.get(entityMemory)
         if (target !is Entity) return false
-        EntityControlHelper.setLookTarget(entity,
+        EntityControlHelper.setLookTarget(
+            entity,
             Pos(target.position.x(), target.position.y() + target.eyeHeight, target.position.z())
         )
         return true

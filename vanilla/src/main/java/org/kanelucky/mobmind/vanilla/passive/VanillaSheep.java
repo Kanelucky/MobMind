@@ -45,43 +45,63 @@ public class VanillaSheep extends PassiveMob {
         return lamb;
     }
 
-    @Override protected double getBaseHealth() { return 8.0; }
-    @Override protected double getBaseAttack() { return 0.0; }
-    @Override protected double getBaseMoveSpeed() { return 0.1; }
+    @Override
+    protected double getBaseHealth() {
+        return 8.0;
+    }
+
+    @Override
+    protected double getBaseAttack() {
+        return 0.0;
+    }
+
+    @Override
+    protected double getBaseMoveSpeed() {
+        return 0.1;
+    }
 
     @Override
     protected BehaviorGroup buildBaseBehaviorGroup() {
-        return addBaseBehaviors(BehaviorGroup.builder())
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.eatGrass(40, entity -> {
-                                    if (entity.getInstance() == null) return;
-                                    entity.getInstance().playSound(
-                                            net.kyori.adventure.sound.Sound.sound(
-                                                    SoundEvent.ENTITY_SHEEP_STEP,
-                                                    net.kyori.adventure.sound.Sound.Source.NEUTRAL,
-                                                    1f, 1f
-                                            ),
-                                            entity.getPosition()
-                                    );
-                                }))
-                                .evaluator(Evaluators.probability(1, 200))
-                                .priority(2)
-                                .period(40)
-                                .build()
-                )
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.flee(VanillaMemoryTypes.NEAREST_WOLF))
-                                .evaluator(entity -> {
-                                    if (!(entity instanceof IntelligentEntity e)) return false;
-                                    return e.getBehaviorGroup().getMemoryStorage()
-                                            .get(VanillaMemoryTypes.NEAREST_WOLF) != null;
-                                })
-                                .priority(5)
-                                .period(1)
-                                .build()
-                )
-                .build();
+        return addBaseBehaviors(BehaviorGroup.builder()).behavior(BehaviorImpl.builder()
+                                                                              .executor(
+                                                                                      Executors.eatGrass(
+                                                                                              40,
+                                                                                              entity -> {
+                                                                                                  if (entity.getInstance() == null)
+                                                                                                      return;
+                                                                                                  entity.getInstance()
+                                                                                                        .playSound(
+                                                                                                                net.kyori.adventure.sound.Sound.sound(
+                                                                                                                        SoundEvent.ENTITY_SHEEP_STEP,
+                                                                                                                        net.kyori.adventure.sound.Sound.Source.NEUTRAL,
+                                                                                                                        1f,
+                                                                                                                        1f),
+                                                                                                                entity.getPosition());
+                                                                                              }))
+                                                                              .evaluator(
+                                                                                      Evaluators.probability(
+                                                                                              1,
+                                                                                              200))
+                                                                              .priority(
+                                                                                      2)
+                                                                              .period(40)
+                                                                              .build())
+                                                        .behavior(BehaviorImpl.builder()
+                                                                              .executor(
+                                                                                      Executors.flee(
+                                                                                              VanillaMemoryTypes.NEAREST_WOLF))
+                                                                              .evaluator(
+                                                                                      entity -> {
+                                                                                          if (!(entity instanceof IntelligentEntity e))
+                                                                                              return false;
+                                                                                          return e.getBehaviorGroup()
+                                                                                                  .getMemoryStorage()
+                                                                                                  .get(VanillaMemoryTypes.NEAREST_WOLF) != null;
+                                                                                      })
+                                                                              .priority(
+                                                                                      5)
+                                                                              .period(1)
+                                                                              .build())
+                                                        .build();
     }
 }

@@ -39,9 +39,7 @@ class FluctuateController : Controller {
     private fun hasWaterAt(entity: EntityCreature, heightOffset: Double): Boolean {
         val pos = entity.position
         val block = entity.instance?.getBlock(
-            Math.floor(pos.x()).toInt(),
-            Math.floor(pos.y() + heightOffset).toInt(),
-            Math.floor(pos.z()).toInt()
+            Math.floor(pos.x()).toInt(), Math.floor(pos.y() + heightOffset).toInt(), Math.floor(pos.z()).toInt()
         ) ?: return false
         return block == Block.WATER
     }

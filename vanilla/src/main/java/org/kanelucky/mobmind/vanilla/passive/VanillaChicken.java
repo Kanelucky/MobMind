@@ -12,12 +12,10 @@ import java.util.Set;
 
 public class VanillaChicken extends PassiveMob {
 
-    private static final Set<Material> BREEDING_ITEMS = Set.of(
-            Material.WHEAT_SEEDS,
-            Material.MELON_SEEDS,
-            Material.PUMPKIN_SEEDS,
-            Material.BEETROOT_SEEDS
-    );
+    private static final Set<Material> BREEDING_ITEMS = Set.of(Material.WHEAT_SEEDS,
+                                                               Material.MELON_SEEDS,
+                                                               Material.PUMPKIN_SEEDS,
+                                                               Material.BEETROOT_SEEDS);
 
     public VanillaChicken() {
         super(EntityType.CHICKEN);

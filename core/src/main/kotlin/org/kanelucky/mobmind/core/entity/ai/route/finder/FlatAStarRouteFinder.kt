@@ -106,8 +106,10 @@ open class FlatAStarRouteFinder(
         val cz = floor(current.z).toInt()
 
         for (offset in FLAT_NEIGHBORS) {
-            val dx = offset[0]; val dz = offset[1]
-            val nx = cx + dx; val nz = cz + dz
+            val dx = offset[0];
+            val dz = offset[1]
+            val nx = cx + dx;
+            val nz = cz + dz
 
             if (dx != 0 && dz != 0) {
                 val cardinalX = hasWalkableAt(cx + dx, cy, cz, instance, entity)
@@ -144,12 +146,14 @@ open class FlatAStarRouteFinder(
         ((x.toLong() and 0x3FFFFFFL) shl 38) or ((y.toLong() and 0xFFFL) shl 26) or (z.toLong() and 0x3FFFFFFL)
 
     protected open fun isCloseEnough(a: Node, b: Node): Boolean {
-        val dx = a.x - b.x; val dz = a.z - b.z
+        val dx = a.x - b.x;
+        val dz = a.z - b.z
         return dx * dx + dz * dz < 1.0 && abs(a.y - b.y) <= maxFallDistance
     }
 
     protected open fun heuristic(a: Node, b: Node): Double {
-        val dx = abs(a.x - b.x); val dz = abs(a.z - b.z)
+        val dx = abs(a.x - b.x);
+        val dz = abs(a.z - b.z)
         return max(dx, dz) + SQRT2_MINUS_1 * min(dx, dz)
     }
 
@@ -158,7 +162,9 @@ open class FlatAStarRouteFinder(
     protected fun reconstructPath(end: Node): List<Node> {
         val path = ArrayDeque<Node>()
         var current: Node? = end
-        while (current != null) { path.addFirst(current); current = current.parent }
+        while (current != null) {
+            path.addFirst(current); current = current.parent
+        }
         if (path.size > 1) path.removeFirst()
         return path.toList()
     }

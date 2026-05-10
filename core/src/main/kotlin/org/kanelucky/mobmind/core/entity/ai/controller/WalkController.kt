@@ -39,7 +39,8 @@ class WalkController : Controller {
         val state = entity.navigator.state
         if (state == PPath.State.TERMINATED ||
             state == PPath.State.INVALID ||
-            state == PPath.State.BEST_EFFORT) {
+            state == PPath.State.BEST_EFFORT
+        ) {
             try {
                 entity.navigator.setPathTo(target)
             } catch (e: NullPointerException) {

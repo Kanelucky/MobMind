@@ -54,13 +54,26 @@ class CoreInitializer : MobMindInitializer {
             override fun idle(minTicks: Int, maxTicks: Int) =
                 IdleExecutor(minTicks, maxTicks)
 
-            override fun roam(speed: Double, normalSpeed: Double, maxRange: Int, frequency: Int,
-                              calNextImmediately: Boolean, runningTime: Int,
-                              avoidWater: Boolean, maxRetry: Int) =
-                FlatRandomRoamExecutor(speed, normalSpeed, maxRange, frequency, calNextImmediately, runningTime, avoidWater, maxRetry)
+            override fun roam(
+                speed: Double, normalSpeed: Double, maxRange: Int, frequency: Int,
+                calNextImmediately: Boolean, runningTime: Int,
+                avoidWater: Boolean, maxRetry: Int
+            ) =
+                FlatRandomRoamExecutor(
+                    speed,
+                    normalSpeed,
+                    maxRange,
+                    frequency,
+                    calNextImmediately,
+                    runningTime,
+                    avoidWater,
+                    maxRetry
+                )
 
-            override fun followEntity(memory: MemoryType<out Any?>, speed: Double, normalSpeed: Double,
-                                      maxRangeSq: Double, minRangeSq: Double) =
+            override fun followEntity(
+                memory: MemoryType<out Any?>, speed: Double, normalSpeed: Double,
+                maxRangeSq: Double, minRangeSq: Double
+            ) =
                 FollowEntityExecutor(memory, speed, normalSpeed, maxRangeSq, minRangeSq)
 
             override fun lookAtEntity(memory: MemoryType<out Any?>, duration: Int) =
@@ -83,8 +96,10 @@ class CoreInitializer : MobMindInitializer {
             override fun breeding(duration: Int, speed: Double, normalSpeed: Double) =
                 EntityBreedingExecutor(duration, speed, normalSpeed)
 
-            override fun moveToTarget(memory: MemoryType<out Any?>, speed: Double, normalSpeed: Double,
-                                      maxRangeSq: Double, minRangeSq: Double) =
+            override fun moveToTarget(
+                memory: MemoryType<out Any?>, speed: Double, normalSpeed: Double,
+                maxRangeSq: Double, minRangeSq: Double
+            ) =
                 MoveToTargetExecutor(memory, speed, normalSpeed, maxRangeSq, minRangeSq)
 
             override fun meleeAttack(
@@ -96,8 +111,16 @@ class CoreInitializer : MobMindInitializer {
                 attackCooldown: Int,
                 clearDataWhenLose: Boolean,
                 callback: MeleeAttackCallback?
-            ) = MeleeAttackExecutor(memory, speed, normalSpeed, maxSenseRangeSq, attackRangeSq, attackCooldown, clearDataWhenLose) {
-                    attacker, target -> callback?.onAttack(attacker, target)
+            ) = MeleeAttackExecutor(
+                memory,
+                speed,
+                normalSpeed,
+                maxSenseRangeSq,
+                attackRangeSq,
+                attackCooldown,
+                clearDataWhenLose
+            ) { attacker, target ->
+                callback?.onAttack(attacker, target)
             }
 
             override fun beamAttack(
@@ -148,6 +171,7 @@ class CoreInitializer : MobMindInitializer {
         Sensors.register(object : SensorFactory {
             override fun nearestPlayer(range: Double, minRange: Double, period: Int) =
                 NearestPlayerSensor(range, minRange, period)
+
             override fun nearestFeedingPlayer(range: Double, period: Int) =
                 NearestFeedingPlayerSensor(range, period)
         })

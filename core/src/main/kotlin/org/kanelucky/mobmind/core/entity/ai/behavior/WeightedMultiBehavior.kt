@@ -29,9 +29,7 @@ class WeightedMultiBehavior(
     override fun getPeriod() = period
 
     override fun evaluate(entity: EntityCreature): Boolean {
-        val highestPriority = behaviors
-            .filter { it.evaluate(entity) }
-            .maxOfOrNull { it.priority } ?: return false
+        val highestPriority = behaviors.filter { it.evaluate(entity) }.maxOfOrNull { it.priority } ?: return false
 
         val candidates = behaviors.filter { it.priority == highestPriority && it.evaluate(entity) }
         val totalWeight = candidates.sumOf { it.weight }
@@ -48,7 +46,15 @@ class WeightedMultiBehavior(
     }
 
     override fun execute(entity: EntityCreature) = activeBehavior?.execute(entity) ?: false
-    override fun onStart(entity: EntityCreature) { activeBehavior?.onStart(entity) }
-    override fun onStop(entity: EntityCreature) { activeBehavior?.onStop(entity); activeBehavior = null }
-    override fun onInterrupt(entity: EntityCreature) { activeBehavior?.onInterrupt(entity); activeBehavior = null }
+    override fun onStart(entity: EntityCreature) {
+        activeBehavior?.onStart(entity)
+    }
+
+    override fun onStop(entity: EntityCreature) {
+        activeBehavior?.onStop(entity); activeBehavior = null
+    }
+
+    override fun onInterrupt(entity: EntityCreature) {
+        activeBehavior?.onInterrupt(entity); activeBehavior = null
+    }
 }

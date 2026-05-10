@@ -31,35 +31,50 @@ public class VanillaZombie extends HostileMob {
         return SoundEvent.ENTITY_ZOMBIE_HURT;
     }
 
-    @Override protected double getBaseHealth() { return 20.0; }
-    @Override protected double getBaseAttack() { return 3.0; }
-    @Override protected double getBaseMoveSpeed() { return 0.1; }
+    @Override
+    protected double getBaseHealth() {
+        return 20.0;
+    }
+
+    @Override
+    protected double getBaseAttack() {
+        return 3.0;
+    }
+
+    @Override
+    protected double getBaseMoveSpeed() {
+        return 0.1;
+    }
 
     @Override
     protected BehaviorGroup buildBaseBehaviorGroup() {
-        return addBaseBehaviors(BehaviorGroup.builder())
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.meleeAttack(
-                                        MemoryTypes.NEAREST_PLAYER,
-                                        0.1,
-                                        0.1,
-                                        256.0,
-                                        2.5,
-                                        20,
-                                        false,
-                                        (attacker, target) -> {
-                                            if (attacker instanceof LivingEntity le) le.swingMainHand();
-                                        }
-                                ))
-                                .evaluator(entity -> {
-                                    if (!(entity instanceof IntelligentEntity e)) return false;
-                                    return e.getBehaviorGroup().getMemoryStorage()
-                                            .get(MemoryTypes.NEAREST_PLAYER) != null;
-                                })
-                                .priority(3).period(1).build()
-                )
-                .build();
+        return addBaseBehaviors(BehaviorGroup.builder()).behavior(BehaviorImpl.builder()
+                                                                              .executor(
+                                                                                      Executors.meleeAttack(
+                                                                                              MemoryTypes.NEAREST_PLAYER,
+                                                                                              0.1,
+                                                                                              0.1,
+                                                                                              256.0,
+                                                                                              2.5,
+                                                                                              20,
+                                                                                              false,
+                                                                                              (attacker, target) -> {
+                                                                                                  if (attacker instanceof LivingEntity le)
+                                                                                                      le.swingMainHand();
+                                                                                              }))
+                                                                              .evaluator(
+                                                                                      entity -> {
+                                                                                          if (!(entity instanceof IntelligentEntity e))
+                                                                                              return false;
+                                                                                          return e.getBehaviorGroup()
+                                                                                                  .getMemoryStorage()
+                                                                                                  .get(MemoryTypes.NEAREST_PLAYER) != null;
+                                                                                      })
+                                                                              .priority(
+                                                                                      3)
+                                                                              .period(1)
+                                                                              .build())
+                                                        .build();
     }
 }
 

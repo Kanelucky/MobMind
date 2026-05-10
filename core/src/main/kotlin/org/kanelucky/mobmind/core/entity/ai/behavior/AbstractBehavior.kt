@@ -15,5 +15,7 @@ import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorState
 abstract class AbstractBehavior : Behavior {
     private var state: BehaviorState = BehaviorState.STOP
     override fun getBehaviorState(): BehaviorState = state
-    override fun setBehaviorState(state: BehaviorState) { this.state = state }
+    override fun setBehaviorState(state: BehaviorState) {
+        this.state = state
+    }
 }

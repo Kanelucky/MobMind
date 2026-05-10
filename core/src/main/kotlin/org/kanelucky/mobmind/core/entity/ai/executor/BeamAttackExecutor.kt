@@ -56,7 +56,8 @@ open class BeamAttackExecutor(
         val distSq = entity.position.distanceSquared(currentTarget.position)
         if (distSq > maxRangeSq) return false
 
-        EntityControlHelper.setLookTarget(entity,
+        EntityControlHelper.setLookTarget(
+            entity,
             net.minestom.server.coordinate.Pos(
                 currentTarget.position.x(),
                 currentTarget.position.y() + currentTarget.eyeHeight,

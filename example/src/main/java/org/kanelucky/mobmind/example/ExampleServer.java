@@ -29,17 +29,23 @@ public class ExampleServer {
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
 
         // Set the ChunkGenerator
-        instanceContainer.setGenerator(
-                unit -> unit.modifier().fillHeight(0, 40, Block.GRASS_BLOCK));
+        instanceContainer.setGenerator(unit -> unit.modifier()
+                                                   .fillHeight(0,
+                                                               40,
+                                                               Block.GRASS_BLOCK));
 
         // Add an event callback to specify the spawning instance (and the spawn position)
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
-        globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
-            final Player player = event.getPlayer();
-            player.setRespawnPoint(new Pos(0, 40, 0));
-            player.setGameMode(GameMode.SURVIVAL);
-            event.setSpawningInstance(instanceContainer);
-        });
+        globalEventHandler.addListener(AsyncPlayerConfigurationEvent.class,
+                                       event -> {
+                                           final Player player = event.getPlayer();
+                                           player.setRespawnPoint(new Pos(0,
+                                                                          40,
+                                                                          0));
+                                           player.setGameMode(GameMode.SURVIVAL);
+                                           event.setSpawningInstance(
+                                                   instanceContainer);
+                                       });
 
         globalEventHandler.addListener(PlayerSpawnEvent.class, event -> {
             VanillaSheep sheep = new VanillaSheep();

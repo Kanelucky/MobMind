@@ -33,64 +33,92 @@ public abstract class PassiveMob extends AnimalEntity implements Breedable, Feed
     }
 
     @Override
-    public BehaviorGroup getBehaviorGroup() { return behaviorGroup; }
+    public BehaviorGroup getBehaviorGroup() {
+        return behaviorGroup;
+    }
 
     protected BehaviorGroupBuilder addBaseBehaviors(BehaviorGroupBuilder builder) {
-        return builder
-                .sensor(Sensors.nearestPlayer())
-                .sensor(Sensors.nearestFeedingPlayer())
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.panic())
-                                .evaluator(Evaluators.panic())
-                                .priority(4).period(1).build()
-                )
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.breeding())
-                                .evaluator(Evaluators.inLove())
-                                .priority(3).period(1).build()
-                )
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.followEntity(
-                                        MemoryTypes.NEAREST_FEEDING_PLAYER, 0.125, 0.1, 256.0, 2.0
-                                ))
-                                .evaluator(entity -> {
-                                    if (!(entity instanceof IntelligentEntity e)) return false;
-                                    return e.getBehaviorGroup().getMemoryStorage()
-                                            .get(MemoryTypes.NEAREST_FEEDING_PLAYER) != null;
-                                })
-                                .priority(4).period(1).build()
-                )
-                .behavior(
-                        BehaviorImpl.builder()
-                                .executor(Executors.lookAtEntity(MemoryTypes.NEAREST_PLAYER, 60))
-                                .evaluator(entity -> {
-                                    if (!(entity instanceof IntelligentEntity e)) return false;
-                                    if (e.getBehaviorGroup().getMemoryStorage()
-                                            .get(MemoryTypes.NEAREST_PLAYER) == null) return false;
-                                    return Math.random() < 0.05;
-                                })
-                                .priority(2).period(10).build()
-                )
-                .behavior(
-                        Behaviors.weighted(
-                                Set.<Behavior>of(
-                                        BehaviorImpl.builder()
-                                                .executor(Executors.idle(20, 100))
-                                                .evaluator(entity -> true)
-                                                .priority(1).weight(1).period(1).build(),
-                                        BehaviorImpl.builder()
-                                                .executor(Executors.roam(0.1, 0.1, 10, 20, true, 100, true, 10))
-                                                .evaluator(entity -> true)
-                                                .priority(1).weight(2).period(1).build()
-                                ),
-                                1, 40
-                        )
-                )
-                .controller(Controllers.walk())
-                .controller(Controllers.look());
+        return builder.sensor(Sensors.nearestPlayer())
+                      .sensor(Sensors.nearestFeedingPlayer())
+                      .behavior(BehaviorImpl.builder()
+                                            .executor(Executors.panic())
+                                            .evaluator(Evaluators.panic())
+                                            .priority(4)
+                                            .period(1)
+                                            .build())
+                      .behavior(BehaviorImpl.builder()
+                                            .executor(Executors.breeding())
+                                            .evaluator(Evaluators.inLove())
+                                            .priority(3)
+                                            .period(1)
+                                            .build())
+                      .behavior(BehaviorImpl.builder()
+                                            .executor(Executors.followEntity(
+                                                    MemoryTypes.NEAREST_FEEDING_PLAYER,
+                                                    0.125,
+                                                    0.1,
+                                                    256.0,
+                                                    2.0))
+                                            .evaluator(entity -> {
+                                                if (!(entity instanceof IntelligentEntity e))
+                                                    return false;
+                                                return e.getBehaviorGroup()
+                                                        .getMemoryStorage()
+                                                        .get(MemoryTypes.NEAREST_FEEDING_PLAYER) != null;
+                                            })
+                                            .priority(4)
+                                            .period(1)
+                                            .build())
+                      .behavior(BehaviorImpl.builder()
+                                            .executor(Executors.lookAtEntity(
+                                                    MemoryTypes.NEAREST_PLAYER,
+                                                    60))
+                                            .evaluator(entity -> {
+                                                if (!(entity instanceof IntelligentEntity e))
+                                                    return false;
+                                                if (e.getBehaviorGroup()
+                                                     .getMemoryStorage()
+                                                     .get(MemoryTypes.NEAREST_PLAYER) == null)
+                                                    return false;
+                                                return Math.random() < 0.05;
+                                            })
+                                            .priority(2)
+                                            .period(10)
+                                            .build())
+                      .behavior(Behaviors.weighted(Set.<Behavior>of(BehaviorImpl.builder()
+                                                                                .executor(
+                                                                                        Executors.idle(
+                                                                                                20,
+                                                                                                100))
+                                                                                .evaluator(
+                                                                                        entity -> true)
+                                                                                .priority(
+                                                                                        1)
+                                                                                .weight(1)
+                                                                                .period(1)
+                                                                                .build(),
+                                                                    BehaviorImpl.builder()
+                                                                                .executor(
+                                                                                        Executors.roam(
+                                                                                                0.1,
+                                                                                                0.1,
+                                                                                                10,
+                                                                                                20,
+                                                                                                true,
+                                                                                                100,
+                                                                                                true,
+                                                                                                10))
+                                                                                .evaluator(
+                                                                                        entity -> true)
+                                                                                .priority(
+                                                                                        1)
+                                                                                .weight(2)
+                                                                                .period(1)
+                                                                                .build()),
+                                                   1,
+                                                   40))
+                      .controller(Controllers.walk())
+                      .controller(Controllers.look());
     }
 
     protected BehaviorGroup buildBaseBehaviorGroup() {

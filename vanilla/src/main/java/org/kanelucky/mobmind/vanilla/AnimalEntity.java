@@ -35,12 +35,28 @@ public abstract class AnimalEntity extends IntelligentEntity implements Breedabl
     }
 
     public abstract Set<Material> getBreedingItems();
+
     public abstract SoundEvent getHurtSound();
 
-    @Override public boolean isBaby() { return baby; }
-    @Override public void setBaby(boolean baby) { this.baby = baby; }
-    @Override public int getBreedCooldown() { return breedCooldown; }
-    @Override public void setBreedCooldown(int cooldown) { this.breedCooldown = cooldown; }
+    @Override
+    public boolean isBaby() {
+        return baby;
+    }
+
+    @Override
+    public void setBaby(boolean baby) {
+        this.baby = baby;
+    }
+
+    @Override
+    public int getBreedCooldown() {
+        return breedCooldown;
+    }
+
+    @Override
+    public void setBreedCooldown(int cooldown) {
+        this.breedCooldown = cooldown;
+    }
 
     @Override
     public boolean isBreedingItem(ItemStack item) {
@@ -49,7 +65,9 @@ public abstract class AnimalEntity extends IntelligentEntity implements Breedabl
 
     @Override
     public Key getMobKey() {
-        return Key.key("minecraft", entityType.name().toString());
+        return Key.key("minecraft",
+                       entityType.name()
+                                 .toString());
     }
 
     @Override
@@ -57,12 +75,13 @@ public abstract class AnimalEntity extends IntelligentEntity implements Breedabl
         boolean result = super.damage(damage);
         if (result) {
             if (getInstance() != null) {
-                getInstance().playSound(
-                        Sound.sound(getHurtSound(), Sound.Source.NEUTRAL, 1f, 1f),
-                        getPosition()
-                );
+                getInstance().playSound(Sound.sound(getHurtSound(),
+                                                    Sound.Source.NEUTRAL,
+                                                    1f,
+                                                    1f), getPosition());
             }
-            getBehaviorGroup().getMemoryStorage().set(MemoryTypes.PANIC_TICKS, 100);
+            getBehaviorGroup().getMemoryStorage()
+                              .set(MemoryTypes.PANIC_TICKS, 100);
         }
         return result;
     }

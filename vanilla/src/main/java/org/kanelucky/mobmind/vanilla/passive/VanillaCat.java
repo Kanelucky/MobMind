@@ -13,10 +13,8 @@ import java.util.Set;
 
 public class VanillaCat extends PassiveMob {
 
-    private static final Set<Material> BREEDING_ITEMS = Set.of(
-            Material.COD,
-            Material.SALMON
-    );
+    private static final Set<Material> BREEDING_ITEMS = Set.of(Material.COD,
+                                                               Material.SALMON);
 
     public VanillaCat() {
         super(EntityType.CAT);
@@ -44,8 +42,19 @@ public class VanillaCat extends PassiveMob {
         return kitty;
     }
 
-    @Override protected double getBaseHealth() { return 10.0; }
-    @Override protected double getBaseAttack() { return 0.0; }
-    @Override protected double getBaseMoveSpeed() { return 0.3; }
+    @Override
+    protected double getBaseHealth() {
+        return 10.0;
+    }
+
+    @Override
+    protected double getBaseAttack() {
+        return 0.0;
+    }
+
+    @Override
+    protected double getBaseMoveSpeed() {
+        return 0.3;
+    }
 
 }

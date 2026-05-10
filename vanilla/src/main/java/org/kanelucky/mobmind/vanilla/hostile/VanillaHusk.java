@@ -23,7 +23,18 @@ public class VanillaHusk extends HostileMob {
         return SoundEvent.ENTITY_HUSK_HURT;
     }
 
-    @Override protected double getBaseHealth() { return 20.0; }
-    @Override protected double getBaseAttack() { return 3.0; }
-    @Override protected double getBaseMoveSpeed() { return 0.23; }
+    @Override
+    protected double getBaseHealth() {
+        return 20.0;
+    }
+
+    @Override
+    protected double getBaseAttack() {
+        return 3.0;
+    }
+
+    @Override
+    protected double getBaseMoveSpeed() {
+        return 0.23;
+    }
 }

@@ -27,14 +27,14 @@ class SpaceAStarRouteFinder(
     companion object {
         val SQRT3_MINUS_SQRT2 = sqrt(3.0) - sqrt(2.0)
         val SPACE_NEIGHBORS = arrayOf(
-            intArrayOf(1,0,0), intArrayOf(-1,0,0), intArrayOf(0,0,1), intArrayOf(0,0,-1),
-            intArrayOf(1,0,1), intArrayOf(1,0,-1), intArrayOf(-1,0,1), intArrayOf(-1,0,-1),
-            intArrayOf(0,1,0),
-            intArrayOf(1,1,0), intArrayOf(-1,1,0), intArrayOf(0,1,1), intArrayOf(0,1,-1),
-            intArrayOf(1,1,1), intArrayOf(1,1,-1), intArrayOf(-1,1,1), intArrayOf(-1,1,-1),
-            intArrayOf(0,-1,0),
-            intArrayOf(1,-1,0), intArrayOf(-1,-1,0), intArrayOf(0,-1,1), intArrayOf(0,-1,-1),
-            intArrayOf(1,-1,1), intArrayOf(1,-1,-1), intArrayOf(-1,-1,1), intArrayOf(-1,-1,-1)
+            intArrayOf(1, 0, 0), intArrayOf(-1, 0, 0), intArrayOf(0, 0, 1), intArrayOf(0, 0, -1),
+            intArrayOf(1, 0, 1), intArrayOf(1, 0, -1), intArrayOf(-1, 0, 1), intArrayOf(-1, 0, -1),
+            intArrayOf(0, 1, 0),
+            intArrayOf(1, 1, 0), intArrayOf(-1, 1, 0), intArrayOf(0, 1, 1), intArrayOf(0, 1, -1),
+            intArrayOf(1, 1, 1), intArrayOf(1, 1, -1), intArrayOf(-1, 1, 1), intArrayOf(-1, 1, -1),
+            intArrayOf(0, -1, 0),
+            intArrayOf(1, -1, 0), intArrayOf(-1, -1, 0), intArrayOf(0, -1, 1), intArrayOf(0, -1, -1),
+            intArrayOf(1, -1, 1), intArrayOf(1, -1, -1), intArrayOf(-1, -1, 1), intArrayOf(-1, -1, -1)
         )
     }
 
@@ -44,7 +44,9 @@ class SpaceAStarRouteFinder(
         val cz = floor(current.z).toInt()
 
         return SPACE_NEIGHBORS.mapNotNull { offset ->
-            val nx = cx + offset[0]; val ny = cy + offset[1]; val nz = cz + offset[2]
+            val nx = cx + offset[0];
+            val ny = cy + offset[1];
+            val nz = cz + offset[2]
             val pos = Vec(nx + 0.5, ny + 0.5, nz + 0.5)
             if (!instance.getBlock(nx, ny, nz).isSolid && spacePosEvaluator.evaluate(entity, pos))
                 Node(pos.x(), pos.y(), pos.z())
@@ -55,8 +57,11 @@ class SpaceAStarRouteFinder(
     override fun isCloseEnough(a: Node, b: Node) = a.vec.distanceSquared(b.vec) < 1.5
 
     override fun heuristic(a: Node, b: Node): Double {
-        val dx = abs(a.x - b.x); val dy = abs(a.y - b.y); val dz = abs(a.z - b.z)
-        val max = maxOf(dx, dy, dz); val min = minOf(dx, dy, dz)
+        val dx = abs(a.x - b.x);
+        val dy = abs(a.y - b.y);
+        val dz = abs(a.z - b.z)
+        val max = maxOf(dx, dy, dz);
+        val min = minOf(dx, dy, dz)
         val mid = dx + dy + dz - max - min
         return SQRT3_MINUS_SQRT2 * min + SQRT2_MINUS_1 * mid + max
     }

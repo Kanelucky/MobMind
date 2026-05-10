@@ -20,17 +20,19 @@ public abstract class MobEntity extends IntelligentEntity {
 
     @Override
     public Key getMobKey() {
-        return Key.key("minecraft", entityType.name().toString());
+        return Key.key("minecraft",
+                       entityType.name()
+                                 .toString());
     }
 
     @Override
     public boolean damage(@NotNull Damage damage) {
         boolean result = super.damage(damage);
         if (result && getInstance() != null) {
-            getInstance().playSound(
-                    Sound.sound(getHurtSound(), Sound.Source.HOSTILE, 1f, 1f),
-                    getPosition()
-            );
+            getInstance().playSound(Sound.sound(getHurtSound(),
+                                                Sound.Source.HOSTILE,
+                                                1f,
+                                                1f), getPosition());
         }
         return result;
     }
