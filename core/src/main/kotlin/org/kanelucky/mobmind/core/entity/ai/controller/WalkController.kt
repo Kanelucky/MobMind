@@ -1,5 +1,6 @@
 package org.kanelucky.mobmind.core.entity.ai.controller
 
+import net.minestom.server.coordinate.Point
 import net.minestom.server.entity.EntityCreature
 import net.minestom.server.entity.pathfinding.PPath
 
@@ -20,30 +21,44 @@ import org.kanelucky.mobmind.core.entity.ai.executor.EntityControlHelper
  */
 class WalkController : Controller {
 
+    private var lastTarget: Point? = null
+
     override fun control(entity: EntityCreature) {
         if (entity !is IntelligentEntity) return
 
-        val target = entity.behaviorGroup.memoryStorage.get(MemoryTypes.MOVE_TARGET) ?: run {
+        val target = entity.behaviorGroup.memoryStorage.get(MemoryTypes.MOVE_TARGET)
+        if (target == null) {
+            lastTarget = null
             entity.navigator.reset()
             return
         }
 
-        // Check chunk loaded
         val instance = entity.instance ?: return
-        val chunk = instance.getChunkAt(target)
+
+        val chunkX = target.blockX() shr 4
+        val chunkZ = target.blockZ() shr 4
+        val chunk = instance.getChunk(chunkX, chunkZ)
         if (chunk == null || !chunk.isLoaded) {
             EntityControlHelper.removeRouteTarget(entity)
             return
         }
 
-        val state = entity.navigator.state
-        if (state == PPath.State.TERMINATED ||
-            state == PPath.State.INVALID ||
-            state == PPath.State.BEST_EFFORT
+        val navigator = entity.navigator
+        val state = navigator.state
+
+        val targetChanged = lastTarget == null ||
+                lastTarget!!.blockX() != target.blockX() ||
+                lastTarget!!.blockY() != target.blockY() ||
+                lastTarget!!.blockZ() != target.blockZ()
+
+        if (targetChanged && (state == PPath.State.TERMINATED ||
+                    state == PPath.State.INVALID ||
+                    state == PPath.State.BEST_EFFORT)
         ) {
             try {
-                entity.navigator.setPathTo(target)
-            } catch (e: NullPointerException) {
+                navigator.setPathTo(target)
+                lastTarget = target
+            } catch (_: NullPointerException) {
                 EntityControlHelper.removeRouteTarget(entity)
             }
         }

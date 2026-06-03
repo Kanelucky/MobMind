@@ -3,10 +3,9 @@ package org.kanelucky.mobmind.core.entity.ai.memory
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryStorage
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
 
-import java.util.concurrent.ConcurrentHashMap
-
 /**
- * ConcurrentHashMap-backed implementation of MemoryStorage.
+ * HashMap-backed implementation of MemoryStorage.
+ * Uses HashMap instead of ConcurrentHashMap since Minestom ticks on a single thread.
  *
  * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
  * Ported and adapted to this project by Kanelucky
@@ -20,10 +19,11 @@ class MemoryStorageImpl : MemoryStorage {
         val EMPTY_VALUE = Any()
     }
 
-    private val storage = ConcurrentHashMap<MemoryType<*>, Any>()
+    private val storage = HashMap<MemoryType<*>, Any>(16)
 
     override fun <T> set(type: MemoryType<T>, value: T?) {
-        storage[type] = value ?: EMPTY_VALUE
+        if (value == null) storage[type] = EMPTY_VALUE
+        else storage[type] = value
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -49,13 +49,9 @@ class MemoryStorageImpl : MemoryStorage {
     override fun isEmpty() = storage.isEmpty()
 
     override fun <T> putIfAbsent(type: MemoryType<T>, value: T): Boolean {
-        var inserted = false
-        storage.compute(type) { _, existing ->
-            if (existing == null || existing === EMPTY_VALUE) {
-                inserted = true
-                value ?: EMPTY_VALUE
-            } else existing
-        }
-        return inserted
+        val existing = storage[type]
+        if (existing != null && existing !== EMPTY_VALUE) return false
+        storage[type] = value ?: EMPTY_VALUE
+        return true
     }
 }

@@ -28,12 +28,22 @@ class NearestPlayerSensor(
 
     override fun sense(entity: EntityCreature) {
         if (entity !is IntelligentEntity) return
+
         val minRangeSq = minRange * minRange
-        val nearest = entity.instance
-            ?.getNearbyEntities(entity.position, range)
-            ?.filterIsInstance<Player>()
-            ?.filter { it.position.distanceSquared(entity.position) >= minRangeSq }
-            ?.minByOrNull { it.position.distanceSquared(entity.position) }
+        val entityPos = entity.position
+        var nearest: Player? = null
+        var nearestDistSq = Double.MAX_VALUE
+
+        entity.instance?.getNearbyEntities(entityPos, range)?.forEach { e ->
+            if (e !is Player) return@forEach
+            val distSq = e.position.distanceSquared(entityPos)
+            if (distSq < minRangeSq) return@forEach
+            if (distSq < nearestDistSq) {
+                nearest = e
+                nearestDistSq = distSq
+            }
+        }
+
         entity.behaviorGroup.memoryStorage.set(MemoryTypes.NEAREST_PLAYER, nearest)
     }
 }
