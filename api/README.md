@@ -4,7 +4,7 @@ The public API module for MobMind. This is the only module you should import in 
 
 ## Dependency
 ```kotlin
-implementation("com.github.Kanelucky.MobMind:api:0.1.1")
+implementation("com.github.Kanelucky.MobMind:api:0.1.2")
 ```
 
 ## What's in here
