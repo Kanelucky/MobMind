@@ -38,19 +38,19 @@ class SpaceAStarRouteFinder(
         )
     }
 
-    override fun getNeighbors(current: Node, instance: Instance, entity: EntityCreature): List<Node> {
+    override fun getNeighbors(current: Node, instance: Instance, entity: EntityCreature) {
         val cx = floor(current.x).toInt()
         val cy = floor(current.y).toInt()
         val cz = floor(current.z).toInt()
 
-        return SPACE_NEIGHBORS.mapNotNull { offset ->
-            val nx = cx + offset[0];
-            val ny = cy + offset[1];
+        for (offset in SPACE_NEIGHBORS) {
+            val nx = cx + offset[0]
+            val ny = cy + offset[1]
             val nz = cz + offset[2]
             val pos = Vec(nx + 0.5, ny + 0.5, nz + 0.5)
-            if (!instance.getBlock(nx, ny, nz).isSolid && spacePosEvaluator.evaluate(entity, pos))
-                Node(pos.x(), pos.y(), pos.z())
-            else null
+            if (!instance.getBlock(nx, ny, nz).isSolid && spacePosEvaluator.evaluate(entity, pos)) {
+                neighborBuffer.add(Node(pos.x(), pos.y(), pos.z()))
+            }
         }
     }
 

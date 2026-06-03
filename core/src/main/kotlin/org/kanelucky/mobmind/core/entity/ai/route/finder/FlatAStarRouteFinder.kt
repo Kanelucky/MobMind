@@ -36,7 +36,7 @@ open class FlatAStarRouteFinder(
     private val openSet = PriorityQueue<Node>(16)
     private val openMap = HashMap<Node, Node>(16)
     private val closedSet = HashSet<Node>(16)
-    private val neighborBuffer = ArrayList<Node>(8)
+    protected val neighborBuffer = ArrayList<Node>(8)
 
     fun search(entity: EntityCreature, targetX: Double, targetY: Double, targetZ: Double): List<Node> {
         walkableCache.clear()
