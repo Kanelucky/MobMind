@@ -40,8 +40,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Kanelucky.MobMind:api:0.1.1")
-    implementation("com.github.Kanelucky.MobMind:core:0.1.1")
+    implementation("com.github.Kanelucky.MobMind:api:0.1.2")
+    implementation("com.github.Kanelucky.MobMind:core:0.1.2")
 }
 ```
 
@@ -205,6 +205,7 @@ public class MyCustomSensor implements Sensor {
 | `Executors.breeding(...)` | Find a mate and spawn offspring |
 | `Executors.eatGrass(duration, callback)` | Eat grass block under entity |
 | `Executors.moveToTarget(memory, ...)` | Move to a position stored in memory |
+| `Executors.flee(memory, ...)` | Run away from a target entity stored in memory |
 
 ---
 
