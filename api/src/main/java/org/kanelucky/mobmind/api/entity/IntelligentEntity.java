@@ -23,9 +23,17 @@ public abstract class IntelligentEntity extends EntityCreature implements MobMin
 
     public abstract BehaviorGroup getBehaviorGroup();
 
-    protected double getBaseHealth() { return 20.0; }
-    protected double getBaseAttack() { return 1.0; }
-    protected double getBaseMoveSpeed() { return 0.1; }
+    protected double getBaseHealth() {
+        return 20.0;
+    }
+
+    protected double getBaseAttack() {
+        return 1.0;
+    }
+
+    protected double getBaseMoveSpeed() {
+        return 0.1;
+    }
 
     @Override
     public void update(long time) {

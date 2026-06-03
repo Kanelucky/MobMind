@@ -10,7 +10,13 @@ import net.minestom.server.entity.EntityCreature;
  */
 public interface BehaviorExecutor {
     boolean execute(EntityCreature entity);
-    default void onStart(EntityCreature entity) {}
-    default void onStop(EntityCreature entity) {}
-    default void onInterrupt(EntityCreature entity) {}
+
+    default void onStart(EntityCreature entity) {
+    }
+
+    default void onStop(EntityCreature entity) {
+    }
+
+    default void onInterrupt(EntityCreature entity) {
+    }
 }

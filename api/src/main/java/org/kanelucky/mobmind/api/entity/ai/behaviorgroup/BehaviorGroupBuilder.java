@@ -8,9 +8,14 @@ import org.kanelucky.mobmind.api.entity.ai.sensor.Sensor;
 
 public interface BehaviorGroupBuilder {
     BehaviorGroupBuilder coreBehavior(Behavior behavior);
+
     BehaviorGroupBuilder behavior(Behavior behavior);
+
     BehaviorGroupBuilder sensor(Sensor sensor);
+
     BehaviorGroupBuilder controller(Controller controller);
+
     BehaviorGroupBuilder memoryStorage(MemoryStorage memoryStorage);
+
     BehaviorGroup build();
 }

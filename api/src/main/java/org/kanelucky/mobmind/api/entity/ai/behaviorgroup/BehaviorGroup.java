@@ -8,7 +8,9 @@ import org.kanelucky.mobmind.api.entity.ai.memory.MemoryStorage;
  */
 public interface BehaviorGroup {
     MemoryStorage getMemoryStorage();
+
     void tick();
+
     void setEntity(EntityCreature entity);
 
     static BehaviorGroupBuilder builder() {
