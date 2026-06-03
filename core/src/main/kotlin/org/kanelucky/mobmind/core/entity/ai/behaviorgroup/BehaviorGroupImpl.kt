@@ -28,21 +28,26 @@ class BehaviorGroupImpl(
     private val memoryStorage: MemoryStorage
 ) : BehaviorGroup {
 
-    override fun getMemoryStorage(): MemoryStorage = memoryStorage
+    override fun getMemoryStorage() = memoryStorage
 
     private var entity: EntityCreature? = null
 
-    private val sensorCounters = mutableMapOf<Sensor, Int>()
-    private val coreBehaviorCounters = mutableMapOf<Behavior, Int>()
-    private val behaviorCounters = mutableMapOf<Behavior, Int>()
-    private val runningCoreBehaviors = linkedSetOf<Behavior>()
-    private val runningBehaviors = linkedSetOf<Behavior>()
+    private val sensorArray = sensors.toTypedArray()
+    private val coreBehaviorArray = coreBehaviors.toTypedArray()
+    private val behaviorArray = behaviors.toTypedArray()
+    private val controllerArray = controllers.toTypedArray()
+
+    private val sensorCounters = IntArray(sensorArray.size)
+    private val coreBehaviorCounters = IntArray(coreBehaviorArray.size)
+    private val behaviorCounters = IntArray(behaviorArray.size)
+
+    private val runningCoreBehaviors = ArrayList<Behavior>(4)
+    private val runningBehaviors = ArrayList<Behavior>(4)
+
+    private val candidateBuffer = ArrayList<Behavior>(4)
 
     override fun setEntity(entity: EntityCreature) {
         this.entity = entity
-        sensors.forEach { sensorCounters[it] = 0 }
-        coreBehaviors.forEach { coreBehaviorCounters[it] = 0 }
-        behaviors.forEach { behaviorCounters[it] = 0 }
     }
 
     override fun tick() {
@@ -52,26 +57,28 @@ class BehaviorGroupImpl(
         evaluateBehaviors(entity)
         tickRunning(entity, runningCoreBehaviors)
         tickRunning(entity, runningBehaviors)
-        controllers.forEach { it.control(entity) }
+        for (controller in controllerArray) controller.control(entity)
     }
 
     private fun collectSensorData(entity: EntityCreature) {
-        for (sensor in sensors) {
-            val counter = (sensorCounters[sensor] ?: 0) + 1
+        for (i in sensorArray.indices) {
+            val sensor = sensorArray[i]
+            val counter = sensorCounters[i] + 1
             if (counter >= sensor.period) {
                 sensor.sense(entity)
-                sensorCounters[sensor] = 0
+                sensorCounters[i] = 0
             } else {
-                sensorCounters[sensor] = counter
+                sensorCounters[i] = counter
             }
         }
     }
 
     private fun evaluateCoreBehaviors(entity: EntityCreature) {
-        for (behavior in coreBehaviors) {
+        for (i in coreBehaviorArray.indices) {
+            val behavior = coreBehaviorArray[i]
             if (behavior in runningCoreBehaviors) continue
-            val counter = (coreBehaviorCounters[behavior] ?: 0) + 1
-            coreBehaviorCounters[behavior] = if (counter < behavior.period) counter else 0
+            val counter = coreBehaviorCounters[i] + 1
+            coreBehaviorCounters[i] = if (counter < behavior.period) counter else 0
             if (counter < behavior.period) continue
             if (behavior.evaluate(entity)) {
                 behavior.onStart(entity)
@@ -82,54 +89,58 @@ class BehaviorGroupImpl(
     }
 
     private fun evaluateBehaviors(entity: EntityCreature) {
-        val candidates = mutableSetOf<Behavior>()
+        candidateBuffer.clear()
         var highestPriority = Int.MIN_VALUE
 
-        for (behavior in behaviors) {
+        for (i in behaviorArray.indices) {
+            val behavior = behaviorArray[i]
             if (behavior in runningBehaviors) continue
-            val counter = (behaviorCounters[behavior] ?: 0) + 1
-            behaviorCounters[behavior] = if (counter < behavior.period) counter else 0
+            val counter = behaviorCounters[i] + 1
+            behaviorCounters[i] = if (counter < behavior.period) counter else 0
             if (counter < behavior.period) continue
             if (!behavior.evaluate(entity)) continue
 
             when {
                 behavior.priority > highestPriority -> {
-                    candidates.clear()
+                    candidateBuffer.clear()
                     highestPriority = behavior.priority
-                    candidates.add(behavior)
+                    candidateBuffer.add(behavior)
                 }
 
-                behavior.priority == highestPriority -> candidates.add(behavior)
+                behavior.priority == highestPriority -> candidateBuffer.add(behavior)
             }
         }
 
-        if (candidates.isEmpty()) return
+        if (candidateBuffer.isEmpty()) return
 
         val runningPriority = runningBehaviors.firstOrNull()?.priority ?: Int.MIN_VALUE
         when {
             highestPriority > runningPriority -> {
                 interruptRunningBehaviors(entity)
-                startBehaviors(entity, candidates)
+                startBehaviors(entity, candidateBuffer)
             }
 
-            highestPriority == runningPriority -> startBehaviors(entity, candidates)
+            highestPriority == runningPriority -> startBehaviors(entity, candidateBuffer)
         }
     }
 
     private fun interruptRunningBehaviors(entity: EntityCreature) {
-        runningBehaviors.forEach { it.onInterrupt(entity); it.behaviorState = BehaviorState.STOP }
+        for (behavior in runningBehaviors) {
+            behavior.onInterrupt(entity)
+            behavior.behaviorState = BehaviorState.STOP
+        }
         runningBehaviors.clear()
     }
 
-    private fun startBehaviors(entity: EntityCreature, toStart: Set<Behavior>) {
-        toStart.forEach {
-            it.onStart(entity)
-            it.behaviorState = BehaviorState.ACTIVE
-            runningBehaviors.add(it)
+    private fun startBehaviors(entity: EntityCreature, toStart: List<Behavior>) {
+        for (behavior in toStart) {
+            behavior.onStart(entity)
+            behavior.behaviorState = BehaviorState.ACTIVE
+            runningBehaviors.add(behavior)
         }
     }
 
-    private fun tickRunning(entity: EntityCreature, running: MutableSet<Behavior>) {
+    private fun tickRunning(entity: EntityCreature, running: MutableList<Behavior>) {
         val iterator = running.iterator()
         while (iterator.hasNext()) {
             val behavior = iterator.next()
