@@ -32,15 +32,18 @@ open class FlatAStarRouteFinder(
         )
     }
 
-    private var walkableCache = mutableMapOf<Long, Boolean>()
+    private val walkableCache = HashMap<Long, Boolean>(64)
+    private val openSet = PriorityQueue<Node>(16)
+    private val openMap = HashMap<Node, Node>(16)
+    private val closedSet = HashSet<Node>(16)
+    private val neighborBuffer = ArrayList<Node>(8)
 
     fun search(entity: EntityCreature, targetX: Double, targetY: Double, targetZ: Double): List<Node> {
-        walkableCache = mutableMapOf()
-        return try {
-            doSearch(entity, targetX, targetY, targetZ)
-        } finally {
-            walkableCache = mutableMapOf()
-        }
+        walkableCache.clear()
+        openSet.clear()
+        openMap.clear()
+        closedSet.clear()
+        return doSearch(entity, targetX, targetY, targetZ)
     }
 
     protected open fun doSearch(entity: EntityCreature, tx: Double, ty: Double, tz: Double): List<Node> {
@@ -52,10 +55,6 @@ open class FlatAStarRouteFinder(
 
         startNode.h = heuristic(startNode, endNode)
 
-        val openSet = PriorityQueue<Node>()
-        val openMap = HashMap<Node, Node>()
-        val closedSet = HashSet<Node>()
-
         openSet.add(startNode)
         openMap[startNode] = startNode
 
@@ -64,7 +63,7 @@ open class FlatAStarRouteFinder(
 
         while (openSet.isNotEmpty() && depth < maxExpandedNodes) {
             val current = openSet.poll()
-            if (closedSet.contains(current)) continue
+            if (current in closedSet) continue
             if (openMap[current] !== current) continue
             openMap.remove(current)
 
@@ -75,8 +74,9 @@ open class FlatAStarRouteFinder(
 
             if (current.h < bestNode.h) bestNode = current
 
-            for (neighbor in getNeighbors(current, instance, entity)) {
-                if (closedSet.contains(neighbor)) continue
+            fillNeighbors(current, instance, entity)
+            for (neighbor in neighborBuffer) {
+                if (neighbor in closedSet) continue
                 val tentativeG = current.g + distance(current, neighbor)
                 val existing = openMap[neighbor]
                 if (existing == null) {
@@ -99,16 +99,20 @@ open class FlatAStarRouteFinder(
         return if (bestNode !== startNode) reconstructPath(bestNode) else emptyList()
     }
 
-    protected open fun getNeighbors(current: Node, instance: Instance, entity: EntityCreature): List<Node> {
-        val neighbors = mutableListOf<Node>()
+    private fun fillNeighbors(current: Node, instance: Instance, entity: EntityCreature) {
+        neighborBuffer.clear()
+        getNeighbors(current, instance, entity)
+    }
+
+    protected open fun getNeighbors(current: Node, instance: Instance, entity: EntityCreature) {
         val cx = floor(current.x).toInt()
         val cy = floor(current.y).toInt()
         val cz = floor(current.z).toInt()
 
         for (offset in FLAT_NEIGHBORS) {
-            val dx = offset[0];
+            val dx = offset[0]
             val dz = offset[1]
-            val nx = cx + dx;
+            val nx = cx + dx
             val nz = cz + dz
 
             if (dx != 0 && dz != 0) {
@@ -119,12 +123,11 @@ open class FlatAStarRouteFinder(
 
             for (dy in 1 downTo -maxFallDistance) {
                 if (isWalkable(nx, cy + dy, nz, instance, entity)) {
-                    neighbors.add(Node(nx + 0.5, (cy + dy).toDouble(), nz + 0.5))
+                    neighborBuffer.add(Node(nx + 0.5, (cy + dy).toDouble(), nz + 0.5))
                     break
                 }
             }
         }
-        return neighbors
     }
 
     protected fun hasWalkableAt(x: Int, cy: Int, z: Int, instance: Instance, entity: EntityCreature): Boolean {
@@ -139,20 +142,21 @@ open class FlatAStarRouteFinder(
         walkableCache[key]?.let { return it }
         val groundBlock = instance.getBlock(x, y - 1, z)
         val result = groundPosEvaluator?.evaluate(entity, groundBlock, x, y - 1, z) ?: groundBlock.isSolid
-        return result.also { walkableCache[key] = it }
+        walkableCache[key] = result
+        return result
     }
 
     protected fun packPos(x: Int, y: Int, z: Int): Long =
         ((x.toLong() and 0x3FFFFFFL) shl 38) or ((y.toLong() and 0xFFFL) shl 26) or (z.toLong() and 0x3FFFFFFL)
 
     protected open fun isCloseEnough(a: Node, b: Node): Boolean {
-        val dx = a.x - b.x;
+        val dx = a.x - b.x
         val dz = a.z - b.z
         return dx * dx + dz * dz < 1.0 && abs(a.y - b.y) <= maxFallDistance
     }
 
     protected open fun heuristic(a: Node, b: Node): Double {
-        val dx = abs(a.x - b.x);
+        val dx = abs(a.x - b.x)
         val dz = abs(a.z - b.z)
         return max(dx, dz) + SQRT2_MINUS_1 * min(dx, dz)
     }
@@ -163,7 +167,8 @@ open class FlatAStarRouteFinder(
         val path = ArrayDeque<Node>()
         var current: Node? = end
         while (current != null) {
-            path.addFirst(current); current = current.parent
+            path.addFirst(current)
+            current = current.parent
         }
         if (path.size > 1) path.removeFirst()
         return path.toList()

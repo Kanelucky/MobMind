@@ -44,6 +44,8 @@ class BehaviorGroupImpl(
     private val runningCoreBehaviors = ArrayList<Behavior>(4)
     private val runningBehaviors = ArrayList<Behavior>(4)
 
+    private val candidateBuffer = ArrayList<Behavior>(4)
+
     override fun setEntity(entity: EntityCreature) {
         this.entity = entity
     }
@@ -87,7 +89,7 @@ class BehaviorGroupImpl(
     }
 
     private fun evaluateBehaviors(entity: EntityCreature) {
-        val candidates = ArrayList<Behavior>(4)
+        candidateBuffer.clear()
         var highestPriority = Int.MIN_VALUE
 
         for (i in behaviorArray.indices) {
@@ -100,25 +102,25 @@ class BehaviorGroupImpl(
 
             when {
                 behavior.priority > highestPriority -> {
-                    candidates.clear()
+                    candidateBuffer.clear()
                     highestPriority = behavior.priority
-                    candidates.add(behavior)
+                    candidateBuffer.add(behavior)
                 }
 
-                behavior.priority == highestPriority -> candidates.add(behavior)
+                behavior.priority == highestPriority -> candidateBuffer.add(behavior)
             }
         }
 
-        if (candidates.isEmpty()) return
+        if (candidateBuffer.isEmpty()) return
 
         val runningPriority = runningBehaviors.firstOrNull()?.priority ?: Int.MIN_VALUE
         when {
             highestPriority > runningPriority -> {
                 interruptRunningBehaviors(entity)
-                startBehaviors(entity, candidates)
+                startBehaviors(entity, candidateBuffer)
             }
 
-            highestPriority == runningPriority -> startBehaviors(entity, candidates)
+            highestPriority == runningPriority -> startBehaviors(entity, candidateBuffer)
         }
     }
 

@@ -4,9 +4,6 @@ import org.kanelucky.mobmind.api.entity.ai.memory.MemoryStorage
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
 
 /**
- * HashMap-backed implementation of MemoryStorage.
- * Uses HashMap instead of ConcurrentHashMap since Minestom ticks on a single thread.
- *
  * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
  * Ported and adapted to this project by Kanelucky
  *

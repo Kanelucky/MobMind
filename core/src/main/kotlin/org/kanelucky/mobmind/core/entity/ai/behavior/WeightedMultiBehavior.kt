@@ -24,18 +24,36 @@ class WeightedMultiBehavior(
 
     private var activeBehavior: Behavior? = null
 
+    private val candidateBuffer = ArrayList<Behavior>(behaviors.size)
+
     override fun getPriority() = priority
     override fun getWeight() = weight
     override fun getPeriod() = period
 
     override fun evaluate(entity: EntityCreature): Boolean {
-        val highestPriority = behaviors.filter { it.evaluate(entity) }.maxOfOrNull { it.priority } ?: return false
+        candidateBuffer.clear()
 
-        val candidates = behaviors.filter { it.priority == highestPriority && it.evaluate(entity) }
-        val totalWeight = candidates.sumOf { it.weight }
+        var highestPriority = Int.MIN_VALUE
+        for (behavior in behaviors) {
+            if (!behavior.evaluate(entity)) continue
+            when {
+                behavior.priority > highestPriority -> {
+                    candidateBuffer.clear()
+                    highestPriority = behavior.priority
+                    candidateBuffer.add(behavior)
+                }
+
+                behavior.priority == highestPriority -> candidateBuffer.add(behavior)
+            }
+        }
+
+        if (candidateBuffer.isEmpty()) return false
+
+        var totalWeight = 0
+        for (b in candidateBuffer) totalWeight += b.weight
         var random = Random.nextInt(totalWeight)
 
-        for (behavior in candidates) {
+        for (behavior in candidateBuffer) {
             random -= behavior.weight
             if (random < 0) {
                 activeBehavior = behavior
@@ -46,6 +64,7 @@ class WeightedMultiBehavior(
     }
 
     override fun execute(entity: EntityCreature) = activeBehavior?.execute(entity) ?: false
+
     override fun onStart(entity: EntityCreature) {
         activeBehavior?.onStart(entity)
     }

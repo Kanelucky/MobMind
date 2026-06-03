@@ -34,6 +34,8 @@ class LookController : Controller {
 
         val yaw = Math.toDegrees(atan2(-dx, dz)).toFloat()
 
-        entity.setView(yaw, pos.pitch())
+        if (yaw != pos.yaw()) {
+            entity.setView(yaw, pos.pitch())
+        }
     }
 }
