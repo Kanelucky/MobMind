@@ -2,8 +2,12 @@ package org.kanelucky.mobmind.api.entity;
 
 import net.minestom.server.entity.EntityCreature;
 import net.minestom.server.entity.EntityType;
+import net.minestom.server.entity.LivingEntity;
 import net.minestom.server.entity.attribute.Attribute;
+import net.minestom.server.entity.damage.Damage;
+import org.jetbrains.annotations.NotNull;
 import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup;
+import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes;
 
 /**
  * Base class for entities with an AI behavior system.
@@ -36,8 +40,27 @@ public abstract class IntelligentEntity extends EntityCreature implements MobMin
     }
 
     @Override
+    public boolean damage(@NotNull Damage damage) {
+        boolean result = super.damage(damage);
+        if (result && damage.getAttacker() instanceof LivingEntity attacker) {
+            getBehaviorGroup().getMemoryStorage().set(MemoryTypes.HURT_BY, attacker);
+            getBehaviorGroup().getMemoryStorage().set(MemoryTypes.HURT_BY_TICKS, 100);
+        }
+        return result;
+    }
+
+    @Override
     public void update(long time) {
         super.update(time);
         getBehaviorGroup().tick();
+        Integer ticks = getBehaviorGroup().getMemoryStorage().get(MemoryTypes.HURT_BY_TICKS);
+        if (ticks != null) {
+            if (ticks <= 0) {
+                getBehaviorGroup().getMemoryStorage().clear(MemoryTypes.HURT_BY);
+                getBehaviorGroup().getMemoryStorage().clear(MemoryTypes.HURT_BY_TICKS);
+            } else {
+                getBehaviorGroup().getMemoryStorage().set(MemoryTypes.HURT_BY_TICKS, ticks - 1);
+            }
+        }
     }
 }

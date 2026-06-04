@@ -11,6 +11,7 @@ import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorImpl;
 import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup;
 import org.kanelucky.mobmind.api.entity.ai.executor.Executors;
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes;
+import org.kanelucky.mobmind.api.entity.ai.sensor.Sensors;
 import org.kanelucky.mobmind.vanilla.HostileMob;
 
 import java.util.Set;
@@ -48,33 +49,51 @@ public class VanillaZombie extends HostileMob {
 
     @Override
     protected BehaviorGroup buildBaseBehaviorGroup() {
-        return addBaseBehaviors(BehaviorGroup.builder()).behavior(BehaviorImpl.builder()
-                                                                              .executor(
-                                                                                      Executors.meleeAttack(
-                                                                                              MemoryTypes.NEAREST_PLAYER,
-                                                                                              0.1,
-                                                                                              0.1,
-                                                                                              256.0,
-                                                                                              2.5,
-                                                                                              20,
-                                                                                              false,
-                                                                                              (attacker, target) -> {
-                                                                                                  if (attacker instanceof LivingEntity le)
-                                                                                                      le.swingMainHand();
-                                                                                              }))
-                                                                              .evaluator(
-                                                                                      entity -> {
-                                                                                          if (!(entity instanceof IntelligentEntity e))
-                                                                                              return false;
-                                                                                          return e.getBehaviorGroup()
-                                                                                                  .getMemoryStorage()
-                                                                                                  .get(MemoryTypes.NEAREST_PLAYER) != null;
-                                                                                      })
-                                                                              .priority(
-                                                                                      3)
-                                                                              .period(1)
-                                                                              .build())
-                                                        .build();
+        return addBaseBehaviors(BehaviorGroup.builder())
+                .sensor(Sensors.hurtBy())
+                .behavior(BehaviorImpl.builder()
+                                      .executor(Executors.meleeAttack(
+                                              MemoryTypes.HURT_BY,
+                                              0.1,
+                                              0.1,
+                                              256.0,
+                                              2.5,
+                                              20,
+                                              false,
+                                              (attacker, target) -> {
+                                                  if (attacker instanceof LivingEntity le) le.swingMainHand();
+                                            }))
+                                      .evaluator(entity -> {
+                                        if (!(entity instanceof IntelligentEntity e)) return false;
+                                        return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.HURT_BY) != null;
+                                      })
+                                      .priority(4)
+                                      .period(1)
+                                      .build()
+                         )
+                .behavior(BehaviorImpl.builder()
+                                      .executor(Executors.meleeAttack(
+                                              MemoryTypes.NEAREST_PLAYER,
+                                              0.1,
+                                              0.1,
+                                              256.0,
+                                              2.5,
+                                              20,
+                                              false,
+                                              (attacker, target) -> {
+                                                  if (attacker instanceof LivingEntity le)
+                                                      le.swingMainHand();
+                                              }))
+                                      .evaluator(entity -> {
+                                          if (!(entity instanceof IntelligentEntity e)) return false;
+                                          return e.getBehaviorGroup()
+                                                  .getMemoryStorage()
+                                                  .get(MemoryTypes.NEAREST_PLAYER) != null;
+                                      })
+                                      .priority(3)
+                                      .period(1)
+                                      .build())
+                .build();
     }
 }
 

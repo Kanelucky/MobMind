@@ -22,6 +22,7 @@ import org.kanelucky.mobmind.core.entity.ai.evaluator.InLoveEvaluator
 import org.kanelucky.mobmind.core.entity.ai.evaluator.PanicEvaluator
 import org.kanelucky.mobmind.core.entity.ai.evaluator.ProbabilityEvaluator
 import org.kanelucky.mobmind.core.entity.ai.executor.*
+import org.kanelucky.mobmind.core.entity.ai.sensor.HurtBySensor
 import org.kanelucky.mobmind.core.entity.ai.sensor.NearestEntitySensor
 import org.kanelucky.mobmind.core.entity.ai.sensor.NearestFeedingPlayerSensor
 import org.kanelucky.mobmind.core.entity.ai.sensor.NearestPlayerSensor
@@ -185,6 +186,8 @@ class CoreInitializer : MobMindInitializer {
                 memoryType, entityClass, range, minRange, period,
                 predicate?.let { p -> { e: T -> p.test(e) } }
             )
+
+            override fun hurtBy(clearAfterTicks: Int) = HurtBySensor(clearAfterTicks)
         })
     }
 }

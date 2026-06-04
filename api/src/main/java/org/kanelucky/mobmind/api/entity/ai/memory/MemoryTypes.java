@@ -30,6 +30,10 @@ public final class MemoryTypes {
             "last_in_love_time");
     public static final MemoryType<Integer> PANIC_TICKS = new MemoryType<>(
             "panic_ticks");
+    public static final MemoryType<LivingEntity> HURT_BY = new MemoryType<>(
+            "hurt_by");
+    public static final MemoryType<Integer> HURT_BY_TICKS = new MemoryType<>(
+            "hurt_by_ticks");
 
     private MemoryTypes() {
     }

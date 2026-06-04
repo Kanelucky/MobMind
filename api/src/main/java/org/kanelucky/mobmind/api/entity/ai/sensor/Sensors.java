@@ -85,4 +85,12 @@ public final class Sensors {
                                        period,
                                        predicate);
     }
+
+    public static Sensor hurtBy() {
+        return factory().hurtBy(100);
+    }
+
+    public static Sensor hurtBy(int clearAfterTicks) {
+        return factory().hurtBy(clearAfterTicks);
+    }
 }

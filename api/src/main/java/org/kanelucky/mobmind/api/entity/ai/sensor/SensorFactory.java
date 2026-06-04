@@ -19,4 +19,6 @@ public interface SensorFactory {
             int period,
             @Nullable Predicate<T> predicate
                                                  );
+
+    Sensor hurtBy(int clearAfterTicks);
 }
