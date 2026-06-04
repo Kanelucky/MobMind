@@ -1,5 +1,11 @@
 package org.kanelucky.mobmind.api.entity.ai.sensor;
 
+import net.minestom.server.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
+import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType;
+
+import java.util.function.Predicate;
+
 public final class Sensors {
 
     private static SensorFactory factory;
@@ -35,5 +41,48 @@ public final class Sensors {
 
     public static Sensor nearestFeedingPlayer(double range, int period) {
         return factory().nearestFeedingPlayer(range, period);
+    }
+
+    public static <T extends LivingEntity> Sensor nearestEntity(
+            MemoryType<T> memoryType,
+            Class<T> entityClass
+                                                               ) {
+        return factory().nearestEntity(memoryType,
+                                       entityClass,
+                                       16.0,
+                                       0.0,
+                                       20,
+                                       null);
+    }
+
+    public static <T extends LivingEntity> Sensor nearestEntity(
+            MemoryType<T> memoryType,
+            Class<T> entityClass,
+            double range,
+            double minRange,
+            int period
+                                                               ) {
+        return factory().nearestEntity(memoryType,
+                                       entityClass,
+                                       range,
+                                       minRange,
+                                       period,
+                                       null);
+    }
+
+    public static <T extends LivingEntity> Sensor nearestEntity(
+            MemoryType<T> memoryType,
+            Class<T> entityClass,
+            double range,
+            double minRange,
+            int period,
+            @Nullable Predicate<T> predicate
+                                                               ) {
+        return factory().nearestEntity(memoryType,
+                                       entityClass,
+                                       range,
+                                       minRange,
+                                       period,
+                                       predicate);
     }
 }

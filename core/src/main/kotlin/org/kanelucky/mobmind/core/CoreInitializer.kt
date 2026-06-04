@@ -1,6 +1,7 @@
 package org.kanelucky.mobmind.core
 
 import net.minestom.server.entity.EntityCreature
+import net.minestom.server.entity.LivingEntity
 import org.kanelucky.mobmind.api.entity.MobMindInitializer
 import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorFactory
 import org.kanelucky.mobmind.api.entity.ai.behavior.Behaviors
@@ -9,11 +10,7 @@ import org.kanelucky.mobmind.api.entity.ai.controller.ControllerFactory
 import org.kanelucky.mobmind.api.entity.ai.controller.Controllers
 import org.kanelucky.mobmind.api.entity.ai.evaluator.EvaluatorFactory
 import org.kanelucky.mobmind.api.entity.ai.evaluator.Evaluators
-import org.kanelucky.mobmind.api.entity.ai.executor.EatGrassCallback
-import org.kanelucky.mobmind.api.entity.ai.executor.ExecutorFactory
-import org.kanelucky.mobmind.api.entity.ai.executor.Executors
-import org.kanelucky.mobmind.api.entity.ai.executor.MeleeAttackCallback
-import org.kanelucky.mobmind.api.entity.ai.executor.ProjectileSupplier
+import org.kanelucky.mobmind.api.entity.ai.executor.*
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
 import org.kanelucky.mobmind.api.entity.ai.sensor.SensorFactory
 import org.kanelucky.mobmind.api.entity.ai.sensor.Sensors
@@ -25,8 +22,10 @@ import org.kanelucky.mobmind.core.entity.ai.evaluator.InLoveEvaluator
 import org.kanelucky.mobmind.core.entity.ai.evaluator.PanicEvaluator
 import org.kanelucky.mobmind.core.entity.ai.evaluator.ProbabilityEvaluator
 import org.kanelucky.mobmind.core.entity.ai.executor.*
+import org.kanelucky.mobmind.core.entity.ai.sensor.NearestEntitySensor
 import org.kanelucky.mobmind.core.entity.ai.sensor.NearestFeedingPlayerSensor
 import org.kanelucky.mobmind.core.entity.ai.sensor.NearestPlayerSensor
+import java.util.function.Predicate
 
 /**
  * Registers all core implementations into the API factories
@@ -174,6 +173,18 @@ class CoreInitializer : MobMindInitializer {
 
             override fun nearestFeedingPlayer(range: Double, period: Int) =
                 NearestFeedingPlayerSensor(range, period)
+
+            override fun <T : LivingEntity> nearestEntity(
+                memoryType: MemoryType<T>,
+                entityClass: Class<T>,
+                range: Double,
+                minRange: Double,
+                period: Int,
+                predicate: Predicate<T>?
+            ) = NearestEntitySensor(
+                memoryType, entityClass, range, minRange, period,
+                predicate?.let { p -> { e: T -> p.test(e) } }
+            )
         })
     }
 }
