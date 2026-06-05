@@ -33,21 +33,6 @@ public class VanillaZombie extends HostileMob {
     }
 
     @Override
-    protected double getBaseHealth() {
-        return 20.0;
-    }
-
-    @Override
-    protected double getBaseAttack() {
-        return 3.0;
-    }
-
-    @Override
-    protected double getBaseMoveSpeed() {
-        return 0.1;
-    }
-
-    @Override
     protected BehaviorGroup buildBaseBehaviorGroup() {
         return addBaseBehaviors(BehaviorGroup.builder())
                 .sensor(Sensors.hurtBy())

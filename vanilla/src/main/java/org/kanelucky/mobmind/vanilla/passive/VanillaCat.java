@@ -41,20 +41,4 @@ public class VanillaCat extends PassiveMob {
         kitty.setBaby(true);
         return kitty;
     }
-
-    @Override
-    protected double getBaseHealth() {
-        return 10.0;
-    }
-
-    @Override
-    protected double getBaseAttack() {
-        return 0.0;
-    }
-
-    @Override
-    protected double getBaseMoveSpeed() {
-        return 0.3;
-    }
-
 }

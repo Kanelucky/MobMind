@@ -9,7 +9,6 @@ import org.kanelucky.mobmind.api.entity.ai.sensor.Sensor
 
 /**
  * Detects when the entity is damaged and stores the attacker in memory.
- * Unlike other sensors, this is event-driven rather than tick-based.
  *
  * @param clearAfterTicks ticks before clearing the attacker from memory (default 100)
  *

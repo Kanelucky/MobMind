@@ -46,21 +46,6 @@ public class VanillaSheep extends PassiveMob {
     }
 
     @Override
-    protected double getBaseHealth() {
-        return 8.0;
-    }
-
-    @Override
-    protected double getBaseAttack() {
-        return 0.0;
-    }
-
-    @Override
-    protected double getBaseMoveSpeed() {
-        return 0.1;
-    }
-
-    @Override
     protected BehaviorGroup buildBaseBehaviorGroup() {
         return addBaseBehaviors(BehaviorGroup.builder()).behavior(BehaviorImpl.builder()
                                                                               .executor(
