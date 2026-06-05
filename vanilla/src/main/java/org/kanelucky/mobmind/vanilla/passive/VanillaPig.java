@@ -42,20 +42,4 @@ public class VanillaPig extends PassiveMob {
         piglet.setBaby(true);
         return piglet;
     }
-
-    @Override
-    protected double getBaseHealth() {
-        return 10.0;
-    }
-
-    @Override
-    protected double getBaseAttack() {
-        return 0.0;
-    }
-
-    @Override
-    protected double getBaseMoveSpeed() {
-        return 0.1;
-    }
-
 }

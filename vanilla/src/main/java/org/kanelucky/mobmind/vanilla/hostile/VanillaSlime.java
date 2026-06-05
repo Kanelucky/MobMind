@@ -24,19 +24,4 @@ public class VanillaSlime extends HostileMob {
     public SoundEvent getHurtSound() {
         return SoundEvent.ENTITY_SLIME_HURT;
     }
-
-    @Override
-    protected double getBaseHealth() {
-        return size * size;
-    }
-
-    @Override
-    protected double getBaseAttack() {
-        return size <= 1 ? 0.0 : size;
-    }
-
-    @Override
-    protected double getBaseMoveSpeed() {
-        return 0.0;
-    }
 }

@@ -41,20 +41,4 @@ public class VanillaHorse extends PassiveMob {
         foal.setBaby(true);
         return foal;
     }
-
-    @Override
-    protected double getBaseHealth() {
-        return 30.0;
-    }
-
-    @Override
-    protected double getBaseAttack() {
-        return 0.0;
-    }
-
-    @Override
-    protected double getBaseMoveSpeed() {
-        return 0.1375;
-    }
-
 }
