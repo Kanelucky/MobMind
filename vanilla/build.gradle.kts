@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "org.kanelucky"
-version = "0.1.2"
+version = "0.1.3"
 
 dependencies {
     compileOnly(libs.minestom)
