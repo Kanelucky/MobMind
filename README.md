@@ -228,13 +228,12 @@ Detects the nearest entity of any type. Not limited to players — useful for mo
 
 ```java
 // Detect nearest wolf
-public static final MemoryType<Wolf> NEAREST_WOLF = new MemoryType<>("myplugin:nearest_wolf");
-
-.sensor(Sensors.nearestEntity(NEAREST_WOLF, Wolf.class))
+public static final MemoryType<EntityCreature> NEAREST_WOLF =
+        new MemoryType<>("myplugin:nearest_wolf");
 
 // With predicate — only adult wolves
-.sensor(Sensors.nearestEntity(NEAREST_WOLF, Wolf.class, 16.0, 0.0, 20,
-    wolf -> !wolf.isBaby()))
+.sensor(Sensors.nearestEntity(NEAREST_WOLF, EntityCreature.class, 16.0, 0.0, 20,
+        e -> e.getEntityType() == EntityType.WOLF))
 
 // Sheep flees from nearby wolf
 .behavior(
