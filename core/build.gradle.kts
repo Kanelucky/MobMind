@@ -5,13 +5,17 @@ plugins {
 }
 
 group = "org.kanelucky"
-version = "0.1.3"
+version = "0.1.4"
 
 dependencies {
     compileOnly(libs.minestom)
     implementation(libs.fastutil)
     implementation(project(":api"))
     testImplementation(kotlin("test"))
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 publishing {

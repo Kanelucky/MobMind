@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "org.kanelucky"
-version = "0.1.3"
+version = "0.1.4"
 
 dependencies {
     testImplementation(kotlin("test"))
