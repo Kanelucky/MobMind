@@ -21,8 +21,7 @@ public class ExampleServer {
     public static void main(String[] args) {
         // Initialization
         MinecraftServer minecraftServer = MinecraftServer.init();
-        MobMind.INSTANCE.register(new CoreInitializer());
-        MobMind.INSTANCE.init();
+        MobMind.INSTANCE.init(new CoreInitializer());
 
         // Create the instance
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();

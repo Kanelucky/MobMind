@@ -1,31 +1,44 @@
 # MobMind
 
-A flexible, modular entity AI library for [Minestom](https://minestom.net/) servers. Build custom entities with priority-based behaviors, sensors, memory, and pathfinding
+A modular entity AI library for [Minestom](https://minestom.net/) servers.
 
 ---
 
 ## Features
 
-- **Priority-based behavior system** — behaviors run in priority order, higher priority interrupts lower
-- **Sensor system** — scan the environment independently from behavior logic
-- **Type-safe memory** — store and retrieve entity state with `MemoryType<T>`
-- **Pathfinding** — 2D A* for ground entities, 3D A* for flying/swimming entities
-- **Weighted random behaviors** — pick randomly between behaviors with configurable weights
-- **Vanilla registry attributes** — entities automatically use Minecraft's default stats
-- **Java & Kotlin friendly** — API is Java-first, works naturally in Kotlin too
-- **Fully extensible** — create your own sensors, memory types, executors, and evaluators
+- Priority-based behavior system
+- Sensor system — scan the environment independently from behavior logic
+- Type-safe memory with `MemoryType<T>`
+- 2D A* pathfinding for ground entities, 3D A* for flying/swimming entities
+- Weighted random behavior selection
+- Vanilla registry attributes — entities use Minecraft's default stats automatically
+- Java & Kotlin compatible
+- Extensible — create your own sensors, memory types, executors, and evaluators
+
+---
+
+## Should I use MobMind for my server?
+
+It depends on what you're building.
+
+MobMind is designed for projects that need complex AI or AI that behaves similarly to vanilla Minecraft. If you're creating many custom entities, want reusable behaviors, or need more advanced decision-making, MobMind can save a lot of time in the long run.
+
+However, MobMind is **not** the right choice for every project.
+
+If your server only needs a few simple entities with straightforward AI, writing the logic directly inside your entity classes will usually be simpler. In that case, you may even want to look for a alternative ([Stommobs](https://github.com/bed-dev/stommobs), etc).
+
+MobMind introduces concepts such as behaviors, sensors, memory, and controllers, so there is a learning curve before its benefits become apparent.
 
 ---
 
 ## Architecture
 
 ```
-api/     ← Interfaces and factories. Only touch this
-core/    ← Implementations. Never import directly
-example/ ← Full example Minestom server with some simple entities
+api/     ← Interfaces and factories. Only touch this.
+core/    ← Implementations. Never import directly.
+vanilla/ ← Vanilla entity implementations.
+example/ ← Example Minestom server.
 ```
-
-Dev code depends only on `api`. `core` is a runtime implementation detail
 
 ---
 
@@ -37,18 +50,15 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Kanelucky.MobMind:api:0.1.3")
-    implementation("com.github.Kanelucky.MobMind:core:0.1.3")
+    implementation("com.github.Kanelucky.MobMind:api:0.2.0")
+    implementation("com.github.Kanelucky.MobMind:core:0.2.0")
 }
 ```
 
 ### Initialize
 
-Call once at server startup, before spawning any entities:
-
 ```java
-MobMind.INSTANCE.register(new CoreInitializer());
-MobMind.INSTANCE.init();
+MobMind.INSTANCE.init(new CoreInitializer());
 ```
 
 ---
@@ -57,7 +67,7 @@ MobMind.INSTANCE.init();
 
 ### Vanilla mob
 
-Stats are automatically loaded from Minecraft's entity registry. No need to override anything unless you want custom values:
+Stats are loaded from Minecraft's entity registry automatically:
 
 ```java
 public class MyZombie extends HostileMob {
@@ -66,7 +76,6 @@ public class MyZombie extends HostileMob {
     @Override public Key getMobKey() { return Key.key("myplugin", "my_zombie"); }
     @Override public SoundEvent getHurtSound() { return SoundEvent.ENTITY_ZOMBIE_HURT; }
 
-    // Health, attack, speed automatically from Minecraft registry
     // Override only if you want custom values:
     // @Override protected double getBaseHealth() { return 200.0; }
 }
@@ -81,8 +90,7 @@ public class MyZombie extends IntelligentEntity {
 
     public MyZombie() {
         super(EntityType.ZOMBIE);
-        this.behaviorGroup = buildBehaviorGroup();
-        this.behaviorGroup.setEntity(this);
+        this.behaviorGroup = buildBehaviorGroup().withEntity(this);
     }
 
     @Override public Key getMobKey() { return Key.key("myplugin", "my_zombie"); }
@@ -95,24 +103,18 @@ public class MyZombie extends IntelligentEntity {
             .behavior(
                 BehaviorImpl.builder()
                     .executor(Executors.meleeAttack(MemoryTypes.HURT_BY))
-                    .evaluator(entity -> {
-                        if (!(entity instanceof IntelligentEntity e)) return false;
-                        return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.HURT_BY) != null;
-                    })
+                    .evaluator(Evaluators.hasMemory(MemoryTypes.HURT_BY))
                     .priority(4).period(1).build()
             )
             .behavior(
                 BehaviorImpl.builder()
                     .executor(Executors.meleeAttack(MemoryTypes.NEAREST_PLAYER))
-                    .evaluator(entity -> {
-                        if (!(entity instanceof IntelligentEntity e)) return false;
-                        return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.NEAREST_PLAYER) != null;
-                    })
+                    .evaluator(Evaluators.hasMemory(MemoryTypes.NEAREST_PLAYER))
                     .priority(3).period(1).build()
             )
             .behavior(
                 BehaviorImpl.builder()
-                    .executor(Executors.roam())
+                    .executor(Executors.roamBuilder().speed(0.1).maxRange(8).build())
                     .evaluator(entity -> true)
                     .priority(1).period(1).build()
             )
@@ -129,11 +131,21 @@ public class MyZombie extends IntelligentEntity {
 
 ### BehaviorGroup
 
-The AI brain. Manages behaviors, sensors, memory, and controllers. Built via `BehaviorGroup.builder()`.
+The AI brain. Manages behaviors, sensors, memory, and controllers.
+
+```java
+BehaviorGroup.builder()
+    .sensor(...)
+    .behavior(...)
+    .controller(Controllers.walk())
+    .controller(Controllers.look())
+    .build()
+    .withEntity(this); // bind entity in one line
+```
 
 ### Behavior
 
-A unit of AI logic with a priority, weight, and period. Uses a `BehaviorExecutor` (what to do) and a `BehaviorEvaluator` (when to activate).
+A unit of AI logic. Has an executor (what to do) and an evaluator (when to activate).
 
 ```java
 BehaviorImpl.builder()
@@ -146,7 +158,7 @@ BehaviorImpl.builder()
 
 ### Memory
 
-Type-safe key-value storage per entity, read and written by sensors and executors.
+Type-safe key-value storage per entity.
 
 ```java
 // Built-in types
@@ -157,194 +169,115 @@ MemoryTypes.MOVE_TARGET              // Point
 MemoryTypes.LOOK_TARGET              // Point
 MemoryTypes.PANIC_TICKS              // Integer
 MemoryTypes.IS_IN_LOVE               // Boolean
-MemoryTypes.HURT_BY                  // LivingEntity — set when damaged
-MemoryTypes.HURT_BY_TICKS            // Integer — ticks remaining
-```
+MemoryTypes.HURT_BY                  // LivingEntity
+MemoryTypes.HURT_BY_TICKS            // Integer
 
-#### Custom memory types
-
-You can define any memory type for your own use cases:
-
-```java
+// Custom types
 public static final MemoryType<LivingEntity> AGGRO_TARGET =
     new MemoryType<>("myplugin:aggro_target");
-
-public static final MemoryType<Integer> RAGE_LEVEL =
-    new MemoryType<>("myplugin:rage_level");
 ```
 
 ---
 
 ## Sensors
 
-Scans the environment and writes to memory at a configurable interval.
-
-### Built-in sensors
+### Built-in
 
 ```java
-Sensors.nearestPlayer()                        // range 16, period 20
-Sensors.nearestPlayer(24.0, 0.0, 10)          // custom range and period
-Sensors.nearestFeedingPlayer()                 // range 8, period 20
-Sensors.hurtBy()                               // tracks who last damaged this entity
-Sensors.hurtBy(200)                            // custom clearAfterTicks
-Sensors.nearestEntity(MY_TARGET, Wolf.class)   // nearest entity of any type
-Sensors.nearestEntity(MY_TARGET, Wolf.class, 24.0, 0.0, 10, wolf -> !wolf.isBaby())
+Sensors.nearestPlayer()
+Sensors.nearestPlayer(24.0, 0.0, 10)
+Sensors.nearestFeedingPlayer()
+Sensors.hurtBy()
+Sensors.hurtBy(200)
+Sensors.nearestEntity(MY_TARGET, EntityCreature.class)
+Sensors.nearestEntity(MY_TARGET, EntityCreature.class, 16.0, 0.0, 20,
+    e -> e.getEntityType() == EntityType.WOLF)
 ```
 
 ### HurtBySensor
 
-Tracks who last damaged the entity. Stores the attacker in `MemoryTypes.HURT_BY` for a configurable duration. Useful for aggro systems — making mobs retaliate against their attacker with higher priority than their normal target:
+Tracks the last entity that damaged this entity. Stores it in `MemoryTypes.HURT_BY` for a configurable duration:
 
 ```java
-BehaviorGroup.builder()
-    .sensor(Sensors.nearestPlayer())
-    .sensor(Sensors.hurtBy(100)) // remember attacker for 100 ticks
-    // Retaliate against attacker — highest priority
-    .behavior(
-        BehaviorImpl.builder()
-            .executor(Executors.meleeAttack(MemoryTypes.HURT_BY))
-            .evaluator(entity -> {
-                if (!(entity instanceof IntelligentEntity e)) return false;
-                return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.HURT_BY) != null;
-            })
-            .priority(4).period(1).build()
-    )
-    // Normal attack — lower priority
-    .behavior(
-        BehaviorImpl.builder()
-            .executor(Executors.meleeAttack(MemoryTypes.NEAREST_PLAYER))
-            .evaluator(entity -> {
-                if (!(entity instanceof IntelligentEntity e)) return false;
-                return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.NEAREST_PLAYER) != null;
-            })
-            .priority(3).period(1).build()
-    )
-    .build();
+.sensor(Sensors.hurtBy(100))
+
+// Retaliate against attacker
+.behavior(
+    BehaviorImpl.builder()
+        .executor(Executors.meleeAttack(MemoryTypes.HURT_BY))
+        .evaluator(Evaluators.hasMemory(MemoryTypes.HURT_BY))
+        .priority(4).period(1).build()
+)
 ```
 
 ### NearestEntitySensor
 
-Detects the nearest entity of any type. Not limited to players — useful for mobs that interact with other mobs:
+Finds the nearest entity of any type — not limited to players:
 
 ```java
-// Detect nearest wolf
 public static final MemoryType<EntityCreature> NEAREST_WOLF =
-        new MemoryType<>("myplugin:nearest_wolf");
+    new MemoryType<>("myplugin:nearest_wolf");
 
-// With predicate — only adult wolves
 .sensor(Sensors.nearestEntity(NEAREST_WOLF, EntityCreature.class, 16.0, 0.0, 20,
-        e -> e.getEntityType() == EntityType.WOLF))
+    e -> e.getEntityType() == EntityType.WOLF))
 
-// Sheep flees from nearby wolf
 .behavior(
     BehaviorImpl.builder()
         .executor(Executors.flee(NEAREST_WOLF))
-        .evaluator(entity -> {
-            if (!(entity instanceof IntelligentEntity e)) return false;
-            return e.getBehaviorGroup().getMemoryStorage().get(NEAREST_WOLF) != null;
-        })
+        .evaluator(Evaluators.hasMemory(NEAREST_WOLF))
         .priority(5).period(1).build()
 )
 ```
 
 ### Custom sensor
 
-You have full control — create any sensor for any use case:
-
 ```java
 public class LowHealthSensor implements Sensor {
-    @Override
-    public int getPeriod() { return 5; } // check every 5 ticks
+    @Override public int getPeriod() { return 5; }
 
     @Override
     public void sense(EntityCreature entity) {
         if (!(entity instanceof IntelligentEntity e)) return;
-        boolean isLowHealth = entity.getHealth() / entity.getAttributeValue(Attribute.MAX_HEALTH) < 0.3;
-        e.getBehaviorGroup().getMemoryStorage().set(MyMemoryTypes.IS_LOW_HEALTH, isLowHealth);
+        boolean isLow = entity.getHealth() / entity.getAttributeValue(Attribute.MAX_HEALTH) < 0.3;
+        e.getBehaviorGroup().getMemoryStorage().set(MyMemoryTypes.IS_LOW_HEALTH, isLow);
     }
 }
-
-// Register
-.sensor(new LowHealthSensor())
-```
-
----
-
-## Executors
-
-### Built-in executors
-
-| Method | Description |
-|---|---|
-| `Executors.idle(min, max)` | Stand still for a random duration |
-| `Executors.roam(...)` | Wander randomly within a range |
-| `Executors.wander(radius)` | Move to a random position once |
-| `Executors.lookAround(min, max)` | Look in a random direction |
-| `Executors.followEntity(memory, ...)` | Follow an entity stored in memory |
-| `Executors.lookAtEntity(memory, duration)` | Look at an entity for a duration |
-| `Executors.meleeAttack(memory, ...)` | Move toward and attack a target |
-| `Executors.beamAttack(memory, ...)` | Guardian-style delayed beam attack |
-| `Executors.shootProjectile(memory, ..., supplier)` | Shoot a projectile at a target |
-| `Executors.jump(interval, delay, power, variance)` | Jump periodically |
-| `Executors.panic(...)` | Flee in a random direction |
-| `Executors.flee(memory, ...)` | Run away from a specific entity |
-| `Executors.breeding(...)` | Find a mate and spawn offspring |
-| `Executors.eatGrass(duration, callback)` | Eat grass block under entity |
-| `Executors.moveToTarget(memory, ...)` | Move to a position stored in memory |
-
-### Custom executor
-
-Implement `BehaviorExecutor` directly — or extend a built-in one and override its hooks:
-
-```java
-// From scratch
-public class SummonLightningExecutor implements BehaviorExecutor {
-    private int cooldown = 0;
-
-    @Override
-    public boolean execute(EntityCreature entity) {
-        if (cooldown-- > 0) return true;
-        // strike lightning at target
-        cooldown = 60;
-        return true;
-    }
-
-    @Override public void onStart(EntityCreature entity) { cooldown = 0; }
-    @Override public void onStop(EntityCreature entity) {}
-}
-
-// Extend built-in — add swing arm on melee attack
-Executors.meleeAttack(MemoryTypes.NEAREST_PLAYER, (attacker, target) -> {
-    if (attacker instanceof LivingEntity le) le.swingMainHand();
-})
 ```
 
 ---
 
 ## Evaluators
 
-### Built-in evaluators
+### Built-in
 
 | Method | Description |
 |---|---|
 | `Evaluators.panic()` | True when `PANIC_TICKS > 0` |
-| `Evaluators.inLove()` | True when `IS_IN_LOVE` and not baby, cooldown is 0 |
-| `Evaluators.probability(chance, outOf)` | Random chance, e.g. `probability(1, 200)` |
-| Lambda | `entity -> true` or any inline condition |
+| `Evaluators.inLove()` | True when `IS_IN_LOVE` and ready to breed |
+| `Evaluators.probability(chance, outOf)` | Random chance |
+| `Evaluators.hasMemory(type)` | True when memory type has a value |
+| `Evaluators.lacksMemory(type)` | True when memory type is empty |
+| `Evaluators.hasAllMemory(types...)` | True when all memory types have values |
+| `Evaluators.hasAnyMemory(types...)` | True when any memory type has a value |
+
+```java
+// Before
+.evaluator(entity -> {
+    if (!(entity instanceof IntelligentEntity e)) return false;
+    return e.getBehaviorGroup().getMemoryStorage().get(MemoryTypes.NEAREST_PLAYER) != null;
+})
+
+// After
+.evaluator(Evaluators.hasMemory(MemoryTypes.NEAREST_PLAYER))
+```
 
 ### Custom evaluator
 
-Any lambda or class implementing `BehaviorEvaluator`:
-
 ```java
-// Inline lambda
-.evaluator(entity -> {
-    if (!(entity instanceof IntelligentEntity e)) return false;
-    Boolean isLow = e.getBehaviorGroup().getMemoryStorage().get(MyMemoryTypes.IS_LOW_HEALTH);
-    return Boolean.TRUE.equals(isLow);
-})
+// Lambda
+.evaluator(entity -> entity.getHealth() < 5)
 
-// Reusable class
+// Class
 public class IsLowHealthEvaluator implements BehaviorEvaluator {
     @Override
     public boolean evaluate(EntityCreature entity) {
@@ -353,6 +286,78 @@ public class IsLowHealthEvaluator implements BehaviorEvaluator {
             e.getBehaviorGroup().getMemoryStorage().get(MyMemoryTypes.IS_LOW_HEALTH)
         );
     }
+}
+```
+
+---
+
+## Executors
+
+### Built-in
+
+| Method | Description |
+|---|---|
+| `Executors.idle(min, max)` | Stand still |
+| `Executors.roam(...)` | Wander randomly |
+| `Executors.wander(radius)` | Move to one random position |
+| `Executors.lookAround(min, max)` | Look in a random direction |
+| `Executors.followEntity(memory, ...)` | Follow an entity |
+| `Executors.lookAtEntity(memory, duration)` | Look at an entity |
+| `Executors.meleeAttack(memory, ...)` | Chase and attack |
+| `Executors.beamAttack(memory, ...)` | Delayed beam attack |
+| `Executors.shootProjectile(memory, ..., supplier)` | Shoot a projectile |
+| `Executors.jump(...)` | Jump periodically |
+| `Executors.panic(...)` | Flee in a random direction |
+| `Executors.flee(memory, ...)` | Run away from a specific entity |
+| `Executors.breeding(...)` | Find a mate and spawn offspring |
+| `Executors.eatGrass(duration, callback)` | Eat grass |
+| `Executors.moveToTarget(memory, ...)` | Move to a position |
+
+### Builder pattern
+
+For executors with many parameters, builders are available:
+
+```java
+// Verbose
+Executors.roam(0.1, 0.1, 8, 20, false, 100, false, 10)
+
+// Builder
+Executors.roamBuilder()
+    .speed(0.1)
+    .maxRange(8)
+    .avoidWater(false)
+    .build()
+
+Executors.meleeAttackBuilder(MemoryTypes.NEAREST_PLAYER)
+    .speed(0.1)
+    .attackCooldown(15)
+    .onAttack((attacker, target) -> {
+        if (attacker instanceof LivingEntity le) le.swingMainHand();
+    })
+    .build()
+
+Executors.fleeBuilder(MY_THREAT)
+    .fleeSpeed(0.2)
+    .maxFleeRangeSq(400.0)
+    .build()
+```
+
+### Custom executor
+
+```java
+public class SummonLightningExecutor implements BehaviorExecutor {
+    private int cooldown = 0;
+
+    @Override
+    public boolean execute(EntityCreature entity) {
+        if (cooldown-- > 0) return true;
+        // custom logic here
+        cooldown = 60;
+        return true;
+    }
+
+    @Override public void onStart(EntityCreature entity) { cooldown = 0; }
+    @Override public void onStop(EntityCreature entity) {}
 }
 ```
 
@@ -381,8 +386,6 @@ Behaviors.weighted(
 
 ## Breedable Entities
 
-Implement `Breedable`, `Feedable`, and `Offspring`:
-
 ```java
 public class MySheep extends IntelligentEntity
     implements Breedable, Feedable, Offspring {
@@ -408,6 +411,11 @@ public class MySheep extends IntelligentEntity
     }
 }
 ```
+
+---
+
+## License
+This project is licensed under Apache License. Please see the [LICENSE](LICENSE) file for details.
 
 ---
 

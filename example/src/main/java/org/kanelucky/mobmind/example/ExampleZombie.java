@@ -11,6 +11,7 @@ import org.kanelucky.mobmind.api.entity.ai.behavior.BehaviorImpl;
 import org.kanelucky.mobmind.api.entity.ai.behavior.Behaviors;
 import org.kanelucky.mobmind.api.entity.ai.behaviorgroup.BehaviorGroup;
 import org.kanelucky.mobmind.api.entity.ai.controller.Controllers;
+import org.kanelucky.mobmind.api.entity.ai.evaluator.Evaluators;
 import org.kanelucky.mobmind.api.entity.ai.executor.Executors;
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes;
 import org.kanelucky.mobmind.api.entity.ai.sensor.Sensors;
@@ -23,8 +24,7 @@ public class ExampleZombie extends IntelligentEntity {
 
     public ExampleZombie() {
         super(EntityType.ZOMBIE);
-        this.behaviorGroup = buildBehaviorGroup();
-        this.behaviorGroup.setEntity(this);
+        this.behaviorGroup = buildBehaviorGroup().withEntity(this);
     }
 
     @Override
@@ -86,13 +86,7 @@ public class ExampleZombie extends IntelligentEntity {
                                                           2.5,
                                                           30,
                                                           false))
-                                                  .evaluator(entity -> {
-                                                      if (!(entity instanceof IntelligentEntity e))
-                                                          return false;
-                                                      return e.getBehaviorGroup()
-                                                              .getMemoryStorage()
-                                                              .get(MemoryTypes.NEAREST_PLAYER) != null;
-                                                  })
+                                                  .evaluator(Evaluators.hasMemory(MemoryTypes.NEAREST_PLAYER))
                                                   .priority(3)
                                                   .period(1)
                                                   .build())
@@ -103,13 +97,7 @@ public class ExampleZombie extends IntelligentEntity {
                                                           0.1,
                                                           256.0,
                                                           2.0))
-                                                  .evaluator(entity -> {
-                                                      if (!(entity instanceof IntelligentEntity e))
-                                                          return false;
-                                                      return e.getBehaviorGroup()
-                                                              .getMemoryStorage()
-                                                              .get(MemoryTypes.NEAREST_PLAYER) != null;
-                                                  })
+                                                  .evaluator(Evaluators.hasMemory(MemoryTypes.NEAREST_PLAYER))
                                                   .priority(2)
                                                   .period(1)
                                                   .build())

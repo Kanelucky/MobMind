@@ -37,8 +37,7 @@ public class ExampleSheep extends IntelligentEntity implements Breedable, Feedab
 
     public ExampleSheep() {
         super(EntityType.SHEEP);
-        this.behaviorGroup = buildBehaviorGroup();
-        this.behaviorGroup.setEntity(this);
+        this.behaviorGroup = buildBehaviorGroup().withEntity(this);
     }
 
     @Override
@@ -148,13 +147,7 @@ public class ExampleSheep extends IntelligentEntity implements Breedable, Feedab
                                                           0.1,
                                                           256.0,
                                                           2.0))
-                                                  .evaluator(entity -> {
-                                                      if (!(entity instanceof IntelligentEntity e))
-                                                          return false;
-                                                      return e.getBehaviorGroup()
-                                                              .getMemoryStorage()
-                                                              .get(MemoryTypes.NEAREST_FEEDING_PLAYER) != null;
-                                                  })
+                                                  .evaluator(Evaluators.hasMemory(MemoryTypes.NEAREST_FEEDING_PLAYER))
                                                   .priority(3)
                                                   .period(1)
                                                   .build())
