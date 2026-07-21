@@ -17,6 +17,20 @@ A modular entity AI library for [Minestom](https://minestom.net/) servers.
 
 ---
 
+## Should I use MobMind for my server?
+
+It depends on what you're building.
+
+MobMind is designed for projects that need complex AI or AI that behaves similarly to vanilla Minecraft. If you're creating many custom entities, want reusable behaviors, or need more advanced decision-making, MobMind can save a lot of time in the long run.
+
+However, MobMind is **not** the right choice for every project.
+
+If your server only needs a few simple entities with straightforward AI, writing the logic directly inside your entity classes will usually be simpler. In that case, you may even want to look for a alternative ([Stommobs](https://github.com/bed-dev/stommobs), etc).
+
+MobMind introduces concepts such as behaviors, sensors, memory, and controllers, so there is a learning curve before its benefits become apparent.
+
+---
+
 ## Architecture
 
 ```
