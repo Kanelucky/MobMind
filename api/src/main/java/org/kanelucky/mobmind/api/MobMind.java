@@ -21,5 +21,12 @@ public final class MobMind {
         this.initializer = initializer;
     }
 
+    public void init(MobMindInitializer initializer) {
+        if (initializer == null) throw new IllegalStateException(
+                "Initializer cannot be null"
+        );
+        initializer.initialize();
+    }
+
     private MobMindInitializer initializer;
 }
