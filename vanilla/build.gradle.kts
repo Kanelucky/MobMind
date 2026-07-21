@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("java-library")
+    id("maven-publish")
 }
 
 group = "org.kanelucky"
@@ -13,6 +15,15 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            artifactId = "vanilla"
+        }
+    }
 }
 
 tasks.test {
