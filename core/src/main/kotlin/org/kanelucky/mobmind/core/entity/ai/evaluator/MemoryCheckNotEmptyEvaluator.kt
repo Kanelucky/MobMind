@@ -9,11 +9,7 @@ import org.kanelucky.mobmind.api.entity.ai.evaluator.BehaviorEvaluator
 /**
  * Checks if a specific memory type has a value stored (is not empty)
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class MemoryCheckNotEmptyEvaluator(private val type: MemoryType<*>) : BehaviorEvaluator {
     override fun evaluate(entity: EntityCreature): Boolean {

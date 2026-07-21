@@ -22,8 +22,7 @@ import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
  * @param attackCooldown ticks between attacks (default 20)
  * @param clearDataWhenLose clear memory when target is lost (default false)
  *
- * Originally inspired by PowerNukkitX MeleeAttackExecutor
- * Ported and adapted to Minestom by Kanelucky
+ * @author Kanelucky || PowerNukkitX (https://github.com/PowerNukkitX/PowerNukkitX)
  */
 open class MeleeAttackExecutor(
     private val targetMemory: MemoryType<out Any?>,

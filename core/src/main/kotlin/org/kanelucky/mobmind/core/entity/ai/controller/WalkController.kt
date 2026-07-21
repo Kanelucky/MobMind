@@ -13,11 +13,7 @@ import org.kanelucky.mobmind.core.entity.ai.executor.EntityControlHelper
  * Ground walking movement controller. Walks the entity toward its current
  * move direction
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class WalkController : Controller {
 

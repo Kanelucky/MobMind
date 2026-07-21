@@ -10,11 +10,7 @@ import kotlin.math.floor
  * Checks if the block at the entity's location plus an offset
  * matches the expected block type.
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class BlockCheckEvaluator(
     private val block: Block,

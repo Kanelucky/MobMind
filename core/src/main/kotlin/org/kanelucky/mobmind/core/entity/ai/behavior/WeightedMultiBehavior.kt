@@ -9,11 +9,7 @@ import kotlin.random.Random
  * A composite behavior that uses weighted random selection among the highest-priority
  * children that evaluate to true.
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class WeightedMultiBehavior(
     private val behaviors: Set<Behavior>,

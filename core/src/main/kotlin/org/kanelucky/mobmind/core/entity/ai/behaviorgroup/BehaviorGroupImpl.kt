@@ -14,11 +14,7 @@ import org.kanelucky.mobmind.core.entity.ai.memory.MemoryStorageImpl
 /**
  * Default implementation of [BehaviorGroup].
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class BehaviorGroupImpl(
     private val coreBehaviors: Set<Behavior>,

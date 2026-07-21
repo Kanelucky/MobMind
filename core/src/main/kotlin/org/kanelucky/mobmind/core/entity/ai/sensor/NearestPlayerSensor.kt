@@ -12,11 +12,7 @@ import org.kanelucky.mobmind.api.entity.ai.sensor.Sensor
  * @param range max detection range in blocks (default 16.0)
  * @param minRange min detection range in blocks (default 0.0)
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class NearestPlayerSensor(
     private val range: Double = 16.0,

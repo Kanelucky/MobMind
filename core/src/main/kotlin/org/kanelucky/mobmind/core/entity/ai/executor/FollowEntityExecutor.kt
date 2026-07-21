@@ -19,11 +19,7 @@ import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
  * @param maxRangeSq max squared distance to follow (default 256.0)
  * @param minRangeSq min squared distance before stopping movement (default 4.0)
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class FollowEntityExecutor(
     private val entityMemory: MemoryType<out Any?>,

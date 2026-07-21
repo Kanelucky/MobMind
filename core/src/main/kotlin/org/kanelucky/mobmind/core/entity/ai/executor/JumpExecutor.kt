@@ -17,8 +17,7 @@ import kotlin.random.Random
  * @param jumpPower vertical velocity of jump (default 0.6)
  * @param jumpPowerVariance random variance added to jump power (default 0.5)
  *
- * Originally inspired by PNX BreezeJumpExecutor
- * Ported and adapted to Minestom by Kanelucky
+ * @author Kanelucky || PowerNukkitX (https://github.com/PowerNukkitX/PowerNukkitX)
  */
 open class JumpExecutor(
     private val jumpInterval: Int = 80,

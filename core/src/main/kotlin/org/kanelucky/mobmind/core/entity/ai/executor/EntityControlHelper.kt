@@ -9,11 +9,7 @@ import org.kanelucky.mobmind.api.entity.ai.memory.MemoryTypes
  * Utility class with static helper methods for controlling entity movement
  * and look targets through memory storage
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 object EntityControlHelper {
 

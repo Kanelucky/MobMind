@@ -22,8 +22,7 @@ import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
  * @param clearDataWhenLose clear memory when target lost (default false)
  * @param projectileSupplier creates the projectile entity
  *
- * Originally inspired by PNX BreezeShootExecutor
- * Ported and adapted to Minestom by Kanelucky
+ * @author Kanelucky || PowerNukkitX (https://github.com/PowerNukkitX/PowerNukkitX)
  */
 open class ProjectileShootExecutor(
     private val targetMemory: MemoryType<out Any?>,

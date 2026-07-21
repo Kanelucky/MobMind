@@ -4,12 +4,8 @@ import net.minestom.server.entity.EntityCreature;
 
 /**
  * Scans the environment and updates entity memory.
- * <p>
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- * <p>
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ *
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 public interface Sensor {
     default int getPeriod() {

@@ -19,11 +19,7 @@ import org.kanelucky.mobmind.core.entity.ai.memory.EntityMemoryTypes.ENTITY_SPOU
  * @param speed movement speed while approaching spouse (default 0.3)
  * @param normalSpeed movement speed restored after breeding (default 0.1)
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class EntityBreedingExecutor(
     private val duration: Int = 60,

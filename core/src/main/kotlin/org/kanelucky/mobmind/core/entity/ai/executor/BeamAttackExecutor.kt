@@ -18,8 +18,7 @@ import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType
  * @param attackDelay ticks to charge before dealing damage (default 20)
  * @param clearDataWhenLose clear memory when target lost (default false)
  *
- * Originally inspired by PNX GuardianAttackExecutor
- * Ported and adapted to Minestom by Kanelucky
+ * @author Kanelucky || PowerNukkitX (https://github.com/PowerNukkitX/PowerNukkitX)
  */
 open class BeamAttackExecutor(
     private val targetMemory: MemoryType<out Any?>,

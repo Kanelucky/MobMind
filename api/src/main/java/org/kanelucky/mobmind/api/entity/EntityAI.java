@@ -5,12 +5,8 @@ import java.util.Set;
 
 /**
  * Global AI debug options.
- * <p>
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- * <p>
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ *
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 public final class EntityAI {
 

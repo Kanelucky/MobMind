@@ -7,11 +7,7 @@ import kotlin.math.floor
 /**
  * Represents a node in the pathfinding graph.
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 class Node(val x: Double, val y: Double, val z: Double) : Comparable<Node> {
 

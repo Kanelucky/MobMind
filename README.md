@@ -414,4 +414,4 @@ public class MySheep extends IntelligentEntity
 ## Credits
 - [<img src="https://raw.githubusercontent.com/Kanelucky/Minestom4fun/refs/heads/master/minestom4fun-server/src/main/resources/icon.png" width="16"/>](https://github.com/Kanelucky/Minestom4fun) [Minestom4fun](https://github.com/Kanelucky/Minestom4fun)
 - [<img src="https://raw.githubusercontent.com/AllayMC/Allay/master/docs/assets/logo/allay-chan-640x.png" width="16"/>](https://github.com/AllayMC/Allay) [AllayMC](https://github.com/AllayMC/Allay)
-- [<img src="https://camo.githubusercontent.com/4c5c7b2960e83e04627adf11ddb342d48931dda868a978bd5126129a49a87187/68747470733a2f2f646f63732e706f7765726e756b6b6974782e6f72672f696d672f504e585f4c4f474f5f736d2e706e67" width="16"/>](https://github.com/PowerNukkitX/PowerNukkitX) [PowernukkitX](https://github.com/PowerNukkitX/PowerNukkitX)
+- [<img src="https://raw.githubusercontent.com/PowerNukkitX/PowerNukkitX/refs/heads/master/.github/logo.png" width="16"/>](https://github.com/PowerNukkitX/PowerNukkitX) [PowernukkitX](https://github.com/PowerNukkitX/PowerNukkitX)

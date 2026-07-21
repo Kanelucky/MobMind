@@ -26,8 +26,7 @@ import kotlin.random.Random
  * @param maxFleeRangeSq stop fleeing beyond this squared distance (default 256.0 = 16 blocks)
  * @param recalculateInterval ticks between recalculating flee target (default 10)
  *
- * Originally inspired by PNX FleeExecutor
- * Port author: Kanelucky
+ * @author Kanelucky || PowerNukkitX (https://github.com/PowerNukkitX/PowerNukkitX)
  */
 open class FleeExecutor(
     private val targetMemory: MemoryType<out Any?>,

@@ -13,11 +13,7 @@ import kotlin.math.*
 /**
  * 2D A* pathfinder for ground-walking entities.
  *
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- *
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 open class FlatAStarRouteFinder(
     protected val groundPosEvaluator: GroundPosEvaluator? = null,

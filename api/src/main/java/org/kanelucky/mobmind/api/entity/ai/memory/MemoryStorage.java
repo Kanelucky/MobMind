@@ -2,12 +2,8 @@ package org.kanelucky.mobmind.api.entity.ai.memory;
 
 /**
  * Storage for entity AI memory data.
- * <p>
- * Originally developed in AllayMC (https://github.com/AllayMC/Allay)
- * Ported and adapted to this project by Kanelucky
- * <p>
- * Original author: daoge_cmd (AllayMC)
- * Port author: Kanelucky
+ *
+ * @author Kanelucky || Allay (https://github.com/AllayMC/Allay)
  */
 public interface MemoryStorage {
     <T> void set(MemoryType<T> type, T value);
