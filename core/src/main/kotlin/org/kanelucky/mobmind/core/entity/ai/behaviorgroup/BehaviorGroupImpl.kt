@@ -148,6 +148,11 @@ class BehaviorGroupImpl(
         }
     }
 
+    override fun withEntity(entity: EntityCreature): BehaviorGroup {
+        setEntity(entity)
+        return this
+    }
+
     class Builder : BehaviorGroupBuilder {
         private val coreBehaviors = linkedSetOf<Behavior>()
         private val behaviors = linkedSetOf<Behavior>()

@@ -16,5 +16,10 @@ public interface BehaviorGroup {
     static BehaviorGroupBuilder builder() {
         return BehaviorGroupBuilderProvider.get();
     }
+
+    /**
+     * Sets the entity and returns this BehaviorGroup for chaining.
+     */
+    BehaviorGroup withEntity(EntityCreature entity);
 }
 
