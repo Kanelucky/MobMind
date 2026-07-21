@@ -1,6 +1,9 @@
 package org.kanelucky.mobmind.api.entity.ai.executor;
 
 import net.minestom.server.entity.Entity;
+import org.kanelucky.mobmind.api.entity.ai.executor.builder.FleeExecutorBuilder;
+import org.kanelucky.mobmind.api.entity.ai.executor.builder.MeleeAttackExecutorBuilder;
+import org.kanelucky.mobmind.api.entity.ai.executor.builder.RoamExecutorBuilder;
 import org.kanelucky.mobmind.api.entity.ai.memory.MemoryType;
 
 public final class Executors {
@@ -290,5 +293,17 @@ public final class Executors {
                               minFleeRangeSq,
                               maxFleeRangeSq,
                               recalculateInterval);
+    }
+
+    public static RoamExecutorBuilder roamBuilder() {
+        return new RoamExecutorBuilder();
+    }
+
+    public static MeleeAttackExecutorBuilder meleeAttackBuilder(MemoryType<?> memory) {
+        return new MeleeAttackExecutorBuilder(memory);
+    }
+
+    public static FleeExecutorBuilder fleeBuilder(MemoryType<?> memory) {
+        return new FleeExecutorBuilder(memory);
     }
 }
